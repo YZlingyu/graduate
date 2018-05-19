@@ -13,6 +13,7 @@ import outputDetail from '@/pages/outputDetail'
 import companyDetail from '@/pages/companyDetail'
 import technologyDetail from '@/pages/technologyDetail'
 import question from '@/pages/q&a'
+import companyInfo from '@/pages/companyInfo'
 
 Vue.use(Router)
 
@@ -23,31 +24,31 @@ export default new Router({
       name: 'index',
       component: index
     },
-    {
-      path: '/specialist',
-      name: 'specialist',
-      component: specialist
-    },
-    {
-      path: '/technology',
-      name: 'technology',
-      component: technology
-    },
-    {
-      path: '/patent',
-      name: 'patent',
-      component: patent
-    },
-    {
-      path: '/output',
-      name: 'output',
-      component: output
-    },
-    {
-      path: '/company',
-      name: 'company',
-      component: company
-    },
+    // {
+    //   path: '/specialist',
+    //   name: 'specialist',
+    //   component: specialist
+    // },
+    // {
+    //   path: '/technology',
+    //   name: 'technology',
+    //   component: technology
+    // },
+    // {
+    //   path: '/patent',
+    //   name: 'patent',
+    //   component: patent
+    // },
+    // {
+    //   path: '/output',
+    //   name: 'output',
+    //   component: output
+    // },
+    // {
+    //   path: '/company',
+    //   name: 'company',
+    //   component: company
+    // },
     {
       path: '/specialistDetail',
       name: 'specialistDetail',
@@ -82,6 +83,11 @@ export default new Router({
       path: '/question',
       name: 'question',
       component: question
+    },
+    {
+      path: '/company',
+      name: 'company',
+      component: companyInfo
     }
   ]
 })

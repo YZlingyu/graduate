@@ -196,10 +196,7 @@
       </el-col>
       <el-col :span="18" style="position: relative;">
         <div class="graph-container">
-          <!-- <i class="el-icon-close" @click="controlShow"></i> -->
-          <!-- <img src="../assets/导航器.png" class="navigator1" v-bind:class="{ show: isShow }" > -->
-          <div id="main2"></div>
-          <div class="toolBar"></div>
+          <div id="main"></div>
         </div>
         <i class="el-icon-back" @click="showRightPop" v-if="showRight==false"></i>
         <div class="pop-right" v-if="showRight==false">查看分布图</div>
@@ -237,7 +234,8 @@
         entity: '',
         absList: [],
         nodes: [],
-        edges: []
+        edges: [],
+        treeData: {}
       }
     },
     methods: {
@@ -251,86 +249,9 @@
         this.showRight= !this.showRight;
       },
       changeChoose(x){
-        var svg1 = document.getElementsByTagName("svg");
-        svg1[0].parentNode.removeChild(svg1[0]);
-          console.log(x);
-        if(x === 0){
-          this.nodes = [
-            { "name": "北京蓦然认知科技有限公司"   , "type" : "0" },
-            { "name": "经纬中国"   , "type" : "1" },
-            { "name": "经纬创投"   , "type" : "1" },
-            { "name": "襄禾资本"   , "type" : "1" },
-            { "name": "【新科技创业2017 ⑨】蓦然认知：拓展智能车载场景，2018年推对话启动的广告推荐系统MorAds"   , "type" : "2" },
-            { "name": "36氪首发 | 「文安智能」完成2000万美元B轮融资，三星风投、ABB参投"   , "type" : "2" },
-            { "name": "FF高管与贾跃亭的“分手战争”"   , "type" : "2" },
-            { "name": "自然语言理解"   , "type" : "3" },
-            { "name": "人工智能"   , "type" : "3" },
-            { "name": "机器人"   , "type" : "3" }
-          ];
-          this.edges = [
-            { "source": 1 , "target": 0 , "relation":"投资" },
-            { "source": 2 , "target": 0 , "relation":"投资" },
-            { "source": 3 , "target": 0 , "relation":"投资" },
-            { "source": 4 , "target": 0 , "relation":"新闻" },
-            { "source": 5 , "target": 0 , "relation":"新闻" },
-            { "source": 6 , "target": 0 , "relation":"新闻" },
-            { "source": 7 , "target": 0 , "relation":"技术" },
-            { "source": 8 , "target": 0 , "relation":"技术" },
-            { "source": 9 , "target": 0 , "relation":"技术" }
-          ];
-          console.log(this.nodes, this.edges)
-          this.graphDrawing(this.nodes, this.edges);
-        }else if(x === 1){
-
         // var svg1 = document.getElementsByTagName("svg");
         // svg1[0].parentNode.removeChild(svg1[0]);
-          
-          this.nodes = [
-             { "name": "北京蓦然认知科技有限公司"   , "type" : "0" },
-            { "name": "自然语言理解"   , "type" : "3" },
-            { "name": "人工智能"   , "type" : "3" },
-            { "name": "机器人"   , "type" : "3" }
-          ];
-          this.edges = [
-            { "source": 1 , "target": 0 , "relation":"技术" },
-            { "source": 2 , "target": 0 , "relation":"技术" },
-            { "source": 3 , "target": 0 , "relation":"技术" },
-          ];
-          this.graphDrawing(this.nodes, this.edges);
-          // this.getEnterprises(entity);
-          // nodes = this.nodeList;
-        }else if(x === 3){
-          this.nodes = [
-            { "name": "北京蓦然认知科技有限公司"   , "type" : "0" },
-            { "name": "【新科技创业2017 ⑨】蓦然认知：拓展智能车载场景，2018年推对话启动的广告推荐系统MorAds"   , "type" : "2" },
-            { "name": "36氪首发 | 「文安智能」完成2000万美元B轮融资，三星风投、ABB参投"   , "type" : "2" },
-            { "name": "FF高管与贾跃亭的“分手战争”"   , "type" : "2" }
-          ];
-          this.edges = [
-            { "source": 1 , "target": 0 , "relation":"新闻" },
-            { "source": 2 , "target": 0 , "relation":"新闻" },
-            { "source": 3 , "target": 0 , "relation":"新闻" }
-          ];
-          this.graphDrawing(this.nodes, this.edges);
-          // this.getTechnologies(entity);
-          // nodes = this.nodeList;
-        }else if(x === 4){
-          this.nodes = [
-            { "name": "北京蓦然认知科技有限公司"   , "type" : "0" },
-            { "name": "经纬中国"   , "type" : "1" },
-            { "name": "经纬创投"   , "type" : "1" },
-            { "name": "襄禾资本"   , "type" : "1" },
-            { "name": "北京源码资本投资有限公司", "type": "1"}
-          ];
-          this.edges = [
-            { "source": 1 , "target": 0 , "relation":"投资" },
-            { "source": 2 , "target": 0 , "relation":"投资" },
-            { "source": 3 , "target": 0 , "relation":"投资" },
-            { "source": 4 , "target": 0 , "relation":"投资" }
-          ];
-          this.graphDrawing(this.nodes, this.edges);
-        }
-        console.log(this.nodes, this.edges);
+
       },
       getCompanies(e){
         axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByCompany",{
@@ -348,8 +269,6 @@
           else{
             console.log(err);
           }
-            // console.log(this.enterpriseList);
-            // console.log(err);
         })
       },
       getNews(e){
@@ -362,9 +281,12 @@
             'Content-Type': 'application/x-www-form-urlencoded',
           }
         }).then((res, err) => {
-           this.newsList = res.data;
-            // console.log(res.data);
-            // console.log(err);
+          if(res) {
+            this.newsList = res.data;
+          }
+          else {
+            console.log(err);
+          }
         })
       },
       getCompanyDetail(e){
@@ -381,9 +303,6 @@
             this.enterpriseDetail = res.data[0];
             this.enterpriseRange = res.data[0].opeRange.split("，");
           }
-          // console.log(this.enterpriseRange);
-            // console.log(res);
-            // console.log(err);
         })
       },
       getAbsImport(e){
@@ -400,36 +319,34 @@
             this.absList = res.data;
             console.log(this.absList)
           }
-          // console.log(this.enterpriseRange);
-            // console.log(res);
-            // console.log(err);
+            console.log(err);
         })
       },
-      async getEnterprises(e){
+      getEnterprises(e){
+          var self = this;
         axios.get("http://127.0.0.1:8088/absImport/toName",{
           params:{
             name : e
           },
           datatype:'jsonp',
+          async: true,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           }
         }).then((res, err) => {
           this.nodeList = [];
-           this.enterpriseLength = res.data.length;
-           this.enterpriseList = res.data;
+           self.enterpriseLength = res.data.length;
+           this.enterpriseList.concat(res.data);
            for(var enterprise of this.enterpriseList){
              if(enterprise){
-               this.nodeList.push({"name": enterprise.name, "type": 2});
-             }else{
-               }
+               this.treeData.push({"name": enterprise.name, "children": []});
+             }
+             this.drawTree(data);
            }
-            for(var i=0; i<this.nodeList.length; i++){
-              this.edgeList.push({"source": i, "target": 0})
-            }
         })
       },
       getTechnologies(e){
+        var self = this;
         this.nodeList = [];
         axios.get("http://127.0.0.1:8088/enterpriseTechnologyImport/comName",{
           params:{
@@ -440,248 +357,151 @@
             'Content-Type': 'application/x-www-form-urlencoded',
           }
         }).then((res, err) => {
-           this.technologyLength = res.data.length;
-           this.technologyList = res.data[0].technologys.split(",");
-           for(var technology of this.technologyList){
+           self.technologyLength = res.data.length;
+           self.technologyList = res.data[0].technologys.split(",");
+           for(var technology of self.technologyList){
              if(technology){
-               this.nodeList.push({"name": technology.name, "type": 3});
+               self.nodeList.push({"name": technology.name, "type": 3});
              }else{
              }
            }
         })
       },
-      async getNews(e){
+      getNews(e){
         this.nodeList = [];
         axios.get("http://127.0.0.1:8088/news/nerNames",{
           params:{
             nerNames: e
           },
           datatype:'jsonp',
+          async: true,
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           }
         }).then((res, err) => {
+          // console.log(res.data.length)
            this.newsList = res.data;
-          //  for(var news of this.newsList){
-          //    if(news){
-          //      this.nodeList.push({"name": news.title, "type": 3})
-          //    }
-          //  }
-            // console.log(res);
+            // console.log(this.newsList);
             // console.log(err);
         })
       },
-      graphDrawing(nodes, edges){
-        var width = 800;
-        var height = 550;
-        // document.getElementById("#main2").innerHTML = "";
+      getTreeData(e) {
+        this.treeData.name = this.entity;
+        this.treeData.children = [];
+        this.treeData.children.push({"name": "投资", "children": []});
+        this.treeData.children.push({"name": "技术", "children":[]});
+        this.treeData.children.push({"name": "新闻", "children":[]});
 
-        var svg = d3.select("#main2")
-          .append("svg")
-          .attr("width",width)
-          .attr("height",height);
-
-        var force = d3.layout.force()
-          .nodes(nodes)		//指定节点数组
-          .links(edges)		//指定连线数组
-          .size([width,height])	//指定范围
-          .linkDistance(150)	//指定连线长度
-          .charge(-400);	//相互之间的作用力
-
-        force.start();	//开始作用
-
-        /*console.log(nodes);
-       console.log(edges);*/
-
-        //添加连线
-        var svg_edges = svg.selectAll("line")
-          .data(edges)
-          .enter()
-          .append("line")
-          .style("stroke","#ccc")
-          .style("stroke-width",1)
-          .attr("marker-end", "url(#resolved)" );
-
-        // var color = d3.scale.category20();
-        var color = [
-          {color:"#7C5053",label:"企业"},
-          {color:"#6B1901",label:"投资企业"},
-          {color:"yellow",label:"新闻"},
-          {color:"#9b8117",label:"技术"}
-        ];
-
-        //添加节点
-        var svg_nodes = svg.selectAll("circle")
-          .data(nodes)
-          .enter()
-          .append("circle")
-          .attr("r",20)
-          .style("fill",
-            (d)=>{
-              if(d.type==0){
-                return color[0].color;
-              }else if(d.type==1){
-                return color[1].color;
-              }else if(d.type==2){
-                return color[2].color;
-              }else if(d.type==3){
-                return color[3].color;
-              }else if(d.type==4){
-                return color[4].color;
-              }
+        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByCompany",{
+          params:{
+            company : e
+          },
+          datatype:'jsonp',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then((res, err) => {
+          
+          if(res){
+            // console.log(res.data)
+            for(var item of res.data) {
+              this.treeData.children[0].children.push({"name": item.name, "children": []});
             }
-          )
-        .on("click", function(d, i){
-          //console.log(d.name);
-          if(d.name === "图像识别"){
-            window.location.href="/#/techniqueChain";
-          }else if(d.name==="一种基于人脸识别的系统设计与实现（成果）"){
-            window.location.href="/#/outputDetail";
-          }else if(d.name==="一种基于人脸识别的系统设计与实现（专利）"){
-            window.location.href="/#/patentDetail";
-          }else if(d.name==="北京邮电大学"){
-            window.location.href="/#/companyDetail";
-          }else if(d.name==="李明学"){
-            window.location.href="/#/specialistDetail";
+            axios.get("http://127.0.0.1:8088/enterpriseTechnologyImport/comName",{
+              params:{
+                comName : e
+              },
+              datatype:'jsonp',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              }
+            }).then((res, err) => {
+              
+              this.technologyLength = res.data.length;
+              this.technologyList = res.data[0].technologys.split(",");
+              // console.log(this.technologyList);
+              for(var technology of this.technologyList){
+                if(technology){
+                  this.treeData.children[1].children.push({"name": technology, "children":[]});
+                }else{
+                }
+              }
+              axios.get("http://127.0.0.1:8088/news/nerNames",{
+                params:{
+                  nerNames: e
+                },
+                datatype:'jsonp',
+                async: true,
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                }
+              }).then((res, err) => {
+                console.log(res.data)
+                for(var item of res.data) {
+                  this.treeData.children[2].children.push({"name": item.title, "children": []});
+                }
+              console.log(this.treeData);
+              this.drawTree(this.treeData);
+              })
+            })
+          }
+          else{
+            console.log(err);
           }
         })
-        .call(force.drag);	//使得节点能够拖动
+      },
+      drawTree(data){
+        var echarts = require('echarts/lib/echarts');
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.showLoading();
+        var data = data;
+        myChart.hideLoading();
 
-      //添加描述节点的文字
-        var svg_texts = svg.selectAll("text")
-          .data(nodes)
-          .enter()
-          .append("text")
-          .style("fill", "black")
-          .attr("dx", -30)
-          .attr("dy", 40)
-          .text(function(d){
-            return d.name;
-          });
-
-        var edges_text = svg.selectAll(".linetext")
-          .data(edges)
-          .enter()
-          .append("text")
-          .attr("class","linetext")
-          .style("fill", "black")
-          .text(function(d){
-            return d.relation;
-          });
-        //arrow
-        var marker=
-          svg.append("marker")
-          //.attr("id", function(d) { return d; })
-            .attr("id", "resolved")
-            //.attr("markerUnits","strokeWidth")//设置为strokeWidth箭头会随着线的粗细发生变化
-            .attr("markerUnits","userSpaceOnUse")
-            .attr("viewBox", "0 -5 10 10")//坐标系的区域
-            .attr("refX",32)//箭头坐标
-            .attr("refY", -1)
-            .attr("markerWidth", 12)//标识的大小
-            .attr("markerHeight", 12)
-            .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
-            .attr("stroke-width",2)//箭头宽度
-            .append("path")
-            .attr("d", "M0,-5L10,0L0,5")//箭头的路径
-            .attr('fill','#000000');//箭头颜色
-
-
-          force.on("tick", function(){	//对于每一个时间间隔
-
-          //更新连线坐标
-          svg_edges.attr("x1",function(d){ return d.source.x; })
-            .attr("y1",function(d){ return d.source.y; })
-            .attr("x2",function(d){ return d.target.x; })
-            .attr("y2",function(d){ return d.target.y; });
-
-          //更新节点坐标
-          svg_nodes.attr("cx",function(d){ return d.x; })
-            .attr("cy",function(d){ return d.y; });
-
-          //更新文字坐标
-          svg_texts.attr("x", function(d){ return d.x; })
-            .attr("y", function(d){ return d.y; });
-
-          edges_text.attr("x",function(d){ return (d.source.x + d.target.x) / 2 ; });
-          edges_text.attr("y",function(d){ return (d.source.y + d.target.y) / 2 ; });
-        });
-        // console.log(color);
-        var toolBar = document.getElementsByClassName("toolBar")[0];
-        var tool = "";
-        for(var j=0; j<color.length;j++){
-          tool += '<div class="circle1" style="background-color:'+color[j].color+';"></div><span class="label2">'+color[j].label+'</span>';
-        }
-        toolBar.innerHTML=tool;
+          var option = {
+              tooltip: {
+                  trigger: 'item',
+                  triggerOn: 'mousemove'
+              },
+              series: [
+                  {
+                      type: 'tree',
+                      legend: {
+                        width: 700,
+                        height: 300,
+                        orient: 'horizontal'
+                      },
+                      data: [data],
+                      top: '18%',
+                      bottom: '14%',
+                      layout: 'radial',
+                      symbol: 'emptyCircle',
+                      symbolSize: 7,
+                      initialTreeDepth: 1,
+                      animationDurationUpdate: 750
+                  }
+              ]
+          }
+          myChart.setOption(option);
       }
+
+    },
+    beforeDestroy () {
+     
     },
     mounted(){
-      this.entity = this.$route.query.entity;
-      console.log(this.$route.query.entity);
+       this.entity = this.$route.query.entity;
+      // console.log(this.$route.query.entity);
       this.getCompanies(this.entity);
       this.getNews(this.entity);
       this.getCompanyDetail(this.entity);
       this.getAbsImport(this.entity);
       this.getTechnologies(this.entity);
-      this.nodes = [
-          { "name": "北京蓦然认知科技有限公司"   , "type" : "0" },
-          { "name": "经纬中国"   , "type" : "1" },
-          { "name": "经纬创投"   , "type" : "1" },
-          { "name": "襄禾资本"   , "type" : "1" },
-          { "name": "【新科技创业2017 ⑨】蓦然认知：拓展智能车载场景，2018年推对话启动的广告推荐系统MorAds"   , "type" : "2" },
-          { "name": "36氪首发 | 「文安智能」完成2000万美元B轮融资，三星风投、ABB参投"   , "type" : "2" },
-          { "name": "FF高管与贾跃亭的“分手战争”"   , "type" : "2" },
-          { "name": "自然语言理解"   , "type" : "3" },
-          { "name": "人工智能"   , "type" : "3" },
-          { "name": "机器人"   , "type" : "3" }
-        ];
-        this.edges = [
-          { "source": 1 , "target": 0 , "relation":"投资" },
-          { "source": 2 , "target": 0 , "relation":"投资" },
-          { "source": 3 , "target": 0 , "relation":"投资" },
-          { "source": 4 , "target": 0 , "relation":"新闻" },
-          { "source": 5 , "target": 0 , "relation":"新闻" },
-          { "source": 6 , "target": 0 , "relation":"新闻" },
-          { "source": 7 , "target": 0 , "relation":"技术" },
-          { "source": 8 , "target": 0 , "relation":"技术" },
-          { "source": 9 , "target": 0 , "relation":"技术" }
-        ];
-      this.graphDrawing(this.nodes, this.edges);
-    
-      // console.log(this.radioNum)
-    //  nodes = [
-    //       { "name": "北京蓦然认知科技有限公司"   , "type" : "1" },
-    //       { "name": "经纬中国"   , "type" : "2" },
-    //       { "name": "经纬创投"   , "type" : "2" },
-    //       { "name": "襄禾资本"   , "type" : "2" },
-    //       { "name": "北京源码资本投资有限公司", "type": "2"}
-    //     ];
-      
-        // this.getNews(entity);
-        // nodes = this.nodeList;
-      
-
-      
-      
-
-      // var nodes = this.nodeList;
-
-      
-
-
-      // var edges = this.edgeList;
-
-      // // console.log(nodes, edges)
-      // var edges = [
-      //   { "source": 1 , "target": 0 , "relation":"" },
-      //   { "source": 2 , "target": 0 , "relation":"" },
-      //   { "source": 3 , "target": 0 , "relation":"" }
-      // ];
-
+      this.getTreeData(this.entity);
+      // console.log(this.treeData);
       
     },
     components:{
-      navHeader, forceGraph, rightNav,Timeline,TimelineItem,TimelineTitle
+      navHeader, forceGraph, rightNav, Timeline, TimelineItem, TimelineTitle
     }
   }
 </script>
@@ -831,9 +651,11 @@
     color: dodgerblue;
   }
   /* ----forceGraph---- */
-   #main2{
+   #main{
     margin: 0 auto;
     vertical-align: middle;
+    height: 700px;
+    width: 700px;
   }
   .toolBar{
     width: 800px;
