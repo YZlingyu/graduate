@@ -6,9 +6,12 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import echarts from 'echarts'
+import Vuex from 'vuex' 
+import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(Vuex);
 Vue.prototype.$echarts = echarts 
 import d3 from 'd3'
 
@@ -20,6 +23,7 @@ Vue.use(d3)
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

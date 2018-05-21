@@ -14,6 +14,14 @@ import companyDetail from '@/pages/companyDetail'
 import technologyDetail from '@/pages/technologyDetail'
 import question from '@/pages/q&a'
 import companyInfo from '@/pages/companyInfo'
+import technologyChain from '@/pages/technologyChain'
+import technologyInfo from '@/pages/technologyInfo'
+import patentInfo from '@/pages/patentInfo'
+import outputInfo from '@/pages/outputInfo'
+import specialistInfo from '@/pages/specialistInfo'
+import login from '@/pages/login'
+import register from '@/pages/register'
+import admin from '@/pages/admin'
 
 Vue.use(Router)
 
@@ -88,6 +96,46 @@ export default new Router({
       path: '/company',
       name: 'company',
       component: companyInfo
+    },
+    {
+      path: '/technologyChain',
+      name: 'technologyChain',
+      component: technologyChain
+    },
+    {
+      path: '/technology',
+      name: 'technologyInfo',
+      component: technologyInfo
+    },
+    {
+      path: '/patent',
+      name: 'patentInfo',
+      component: patentInfo
+    },
+    {
+      path: '/output',
+      name: 'outputInfo',
+      component: outputInfo
+    },
+    {
+      path: '/specialist',
+      name: 'specialistInfo',
+      component: specialistInfo
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: admin
     }
   ]
 })

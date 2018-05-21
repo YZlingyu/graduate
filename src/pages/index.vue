@@ -1,11 +1,18 @@
-2<template>
+<template>
   <div id="container">
+    <router-link to="/question">
+      <div class="qa">
+        <img class="qa-img" src="../assets/QA.png">
+        <p class="qa-word">有问题点击我</p>
+      </div>
+    </router-link>
     <div id="slide1" v-bind:style="{height:height1+'px',width:width1+'px'}">
       <el-row style="background-color: #fff;">
         <router-link to="../">
           <img src="../assets/logo.png" class="logo">
+          <h1 class="index-title">中关村四方现代服务产业技术创新战略联盟</h1>
         </router-link>
-        <router-link to="/question"><span class="find1">问一问</span></router-link>
+        <router-link to="/login"><span class="find1">登录</span></router-link>
       </el-row>
 
       <!-----search------>
@@ -45,7 +52,8 @@
     </div>
     <div id="slide2" v-bind:style="{width:width1+'px'}">
       <div style="padding: 20px 50px; box-sizing: border-box; margin: 20px auto; width: 90%;">
-        <h2 class="light">新闻信息</h2>
+        <div id="main"></div>
+        <!-- <h2 class="light">新闻信息</h2>
         <span class="more">查看更多</span>
         <el-row style="margin-bottom: 20px;">
           <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -59,7 +67,7 @@
                   <span class="news_date">{{item.time}}</span>
                   <p class="news_content">{{item.abs}}</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic.png" class="news_pic">
@@ -90,8 +98,8 @@
                   <p class="news_content">据纽约时报、CNBC等多家外媒报道，英国大数据公司“剑桥分析公司（Cambridge Analytica）” 在 2016 年与特朗普竞选团队合作时，竟然私自窃取 5000 万 Facebook 用户的数据！</p>
                 </el-col>
               </el-row> -->
-            </el-tab-pane>
-            <el-tab-pane label="重点事件" name="second">
+            <!-- </el-tab-pane>
+            <el-tab-pane label="重点事件" name="second"> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic2.png" class="news_pic">
@@ -132,7 +140,7 @@
                   <p class="news_content">随着医改的推动，独立影像中心政策限制的放开，第三方独立医学影像中心成为一个备受关注的领域。</p>
                 </el-col>
               </el-row> -->
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
+              <!-- <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
                 <el-col :span="4">
                   <img src="../assets/404.png" class="news_pic">
                 </el-col>
@@ -153,7 +161,7 @@
                   <span class="news_date">{{item.time}}</span>
                   <p class="news_content">{{item.abs}}</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic3.png" class="news_pic">
@@ -194,7 +202,7 @@
                   <p class="news_content">在Space X把一辆特斯拉Roadster送上天的喧嚣后，特斯拉陷入了短暂的沉寂。不过近期的各种动作表明，特斯拉正在回到正轨。</p>
                 </el-col>
               </el-row> -->
-            </el-tab-pane>
+            <!-- </el-tab-pane>
             <el-tab-pane label="负面新闻" name="fourth">
               <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
                 <el-col :span="4">
@@ -205,7 +213,7 @@
                   <span class="news_date">{{item.time}}</span>
                   <p class="news_content">{{item.abs}}</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic4.png" class="news_pic">
@@ -246,7 +254,7 @@
                   <p class="news_content">我不相信亚马逊对此并不知情，他们不愿意介入阻止。我相信亚马逊没有审查他们的新账户，纵容他们盗取身份进行税务欺诈</p>
                 </el-col>
               </el-row> -->
-            </el-tab-pane>
+            <!-- </el-tab-pane>
             <el-tab-pane label="研究报告" name="fifth">
               <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
                 <el-col :span="4">
@@ -257,7 +265,7 @@
                   <span class="news_date">{{item.time}}</span>
                   <p class="news_content">{{item.abs}}</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic5.png" class="news_pic">
@@ -298,7 +306,7 @@
                   <p class="news_content">网络时代的个人信息安全已经成为一个人们愈发关心的话题。那么我们应该如何保护个人隐私呢？来看看国外达人们给出的5个tips吧。</p>
                 </el-col>
               </el-row> -->
-            </el-tab-pane>
+            <!-- </el-tab-pane>
             <el-tab-pane label="行业动态" name="sixth">
               <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
                 <el-col :span="4">
@@ -309,7 +317,7 @@
                   <span class="news_date">{{item.time}}</span>
                   <p class="news_content">{{item.abs}}</p>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <!-- <el-row class="news_row">
                 <el-col :span="4">
                   <img src="../assets/news_pic6.png" class="news_pic">
@@ -350,9 +358,9 @@
                   <p class="news_content">对比人工智能和区块链，或许能够帮我们更好地理解区块链会给我们带来什么。</p>
                 </el-col>
               </el-row> -->
-            </el-tab-pane>
+            <!-- </el-tab-pane>
           </el-tabs>
-        </el-row>
+        </el-row> -->
       </div>
 
     </div>
@@ -399,22 +407,22 @@
           switch(this.searchType)
           {
             case 0:
-            window.location.href = "http://127.0.0.1:8080/#/companyDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/company?entity="+entity;
             break;
             case 1:
-            window.location.href = "http://127.0.0.1:8080/#/companyDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/company?entity="+entity;
             break;
             case 2:
-            window.location.href = "http://127.0.0.1:8080/#/specialistDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/specialist?entity="+entity;
             break;
             case 3:
-            window.location.href = "http://127.0.0.1:8080/#/technologyDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/technology?entity="+entity;
             break;
             case 4:
-            window.location.href = "http://127.0.0.1:8080/#/outputDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/output?entity="+entity;
             break;
             case 5:
-            window.location.href = "http://127.0.0.1:8080/#/patentDetail?entity="+entity;
+            window.location.href = "http://127.0.0.1:8080/#/patent?entity="+entity;
             break;
           }
         }
@@ -436,6 +444,134 @@
           that.height1 = window.height1
         })()
       };
+
+      let echarts = require('echarts/lib/echarts');
+      let myChart = echarts.init(document.getElementById('main'));
+        var option = {
+          title: {
+              text: '行业投资图谱'
+          },
+          tooltip: {},
+          animationDurationUpdate: 1500,
+          animationEasingUpdate: 'quinticInOut',
+          series : [
+              {
+                  type: 'graph',
+                  layout: 'none',
+                  symbolSize: 50,
+                  roam: true,
+                  label: {
+                      normal: {
+                          show: true
+                      }
+                  },
+                  edgeSymbol: ['circle', 'arrow'],
+                  edgeSymbolSize: [4, 10],
+                  edgeLabel: {
+                      normal: {
+                          textStyle: {
+                              fontSize: 20
+                          }
+                      }
+                  },
+                  data: [{
+                      name: '阿里巴巴',
+                      x: 300,
+                      y: 300
+                  }, {
+                      name: '字节跳动',
+                      x: 800,
+                      y: 300
+                  }, {
+                      name: '小桔科技',
+                      x: 550,
+                      y: 100
+                  }, {
+                      name: '腾讯科技',
+                      x: 550,
+                      y: 500
+                  }],
+                  // links: [],
+                  links: [{
+                      symbolSize: [5, 20],
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: {
+                              width: 5,
+                              curveness: 0.2
+                          }
+                      }
+                  }, {
+                      source: '阿里巴巴',
+                      target: '字节跳动',
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: { curveness: 0.2 }
+                      }
+                  }, {
+                      source: '字节跳动',
+                      target: '腾讯科技',
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: { curveness: 0.2 }
+                      }
+                  }, {
+                      source: '小桔科技',
+                      target: '腾讯科技',
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: { curveness: 0.2 }
+                      }
+                  }, {
+                      source: '阿里巴巴',
+                      target: '小桔科技',
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: { curveness: 0.2 }
+                      }
+                  }, {
+                      source: '小桔科技',
+                      target: '字节跳动',
+                      label: {
+                          normal: {
+                              show: true
+                          }
+                      },
+                      lineStyle: {
+                          normal: { curveness: 0.2 }
+                      }
+                  }],
+                  lineStyle: {
+                      normal: {
+                          opacity: 0.9,
+                          width: 2,
+                          curveness: 0
+                      }
+                  }
+              }
+          ]
+      };
+        myChart.setOption(option);
     },
     watch: {
       width1 (val) {
@@ -483,11 +619,18 @@
     text-decoration: none;
     color: #000000;
   }
+  .index-title {
+    color: #000000;
+    text-align: left;
+    font-size: 18px;
+    float: left;
+    line-height: 60px;
+  }
   /*----top-nav-----*/
   .logo{
     width: 60px;
     height: 60px;
-    margin: 10px 80px 10px 30px;
+    margin: 10px 30px 10px 30px;
     float: left;
   }
   .find1{
@@ -615,5 +758,30 @@
   }
   .news_right{
     padding-left:15px;
+  }
+  .qa{
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 300px;
+    right: 0;
+    text-align: center;
+    background-color: #ffffff;
+    padding-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #999;
+  }
+  .qa-img {
+    width: 50px;
+    height: 50px;
+  }
+  .qa-word {
+    font-size: 9px;
+    color: #000;
+    text-decoration: none;
+  }
+  #main {
+    width: 1200px;
+    height: 500px;
   }
 </style>

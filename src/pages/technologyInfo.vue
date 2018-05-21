@@ -37,13 +37,13 @@
     <el-main>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>企业</el-breadcrumb-item>
+        <el-breadcrumb-item>技术</el-breadcrumb-item>
         <el-breadcrumb-item>{{entity}}</el-breadcrumb-item>
       </el-breadcrumb>
       <el-row v-show="show === 1">
         <el-col :span="16">
           <div class="card">
-            <h1 class="title">企业关系图谱</h1>
+            <h1 class="title">技术关系图谱</h1>
             <div id="main"></div>
           </div>
         </el-col>
@@ -69,7 +69,7 @@
               <div class="output-list" v-for="(item, index) in technologyList" :key="item.id">
                 <router-link :to="{path: './technology', query:{entity:item}}">
                   <div class="order">{{ index+1 }}</div>
-                  <span class="output-word">{{item}}</span>
+                  <span class="output-word">{{item.name}}</span>
                 </router-link>
               </div>
             </div>
@@ -86,7 +86,7 @@
                 <span v-if="enterpriseDetail">{{enterpriseDetail.website}}</span><br/>
               </el-col>
             </el-row>
-            <p class="output-detail">北京蓦然认知科技有限公司简称“蓦然认知”，成立于2016年5月5号，总部位于北京市海淀区清华科技园。蓦然认知是一家专注于认知计算，自然语言理解技术的初创公司，对外提供人机协作，智能对话整体解决方案，是国内唯一家能够全语音完成复杂任务的决策引擎。</p>
+            <p class="output-detail">人工智能是计算机科学的一个分支，它企图了解智能的实质，并生产出一种新的能以人类智能相似的方式做出反应的智能机器，该领域的研究包括机器人、语言识别、图像识别、自然语言处理和专家系统等。人工智能从诞生以来，理论和技术日益成熟，应用领域也不断扩大，可以设想，未来人工智能带来的科技产品，将会是人类智慧的“容器”。人工智能可以对人的意识、思维的信息过程的模拟。人工智能不是人的智能，但能像人那样思考、也可能超过人的智能。</p>
           </el-tab-pane>
           <el-tab-pane label="新闻" name="third">
             <span class="title-output">新闻</span><span class="title-output">{{newsList.length}}</span><span class="title-output">条</span>
@@ -103,19 +103,31 @@
         </el-col>
       </el-row>
       <el-row v-show="show === 2">
-        <div class="draw-canvas">
-          <h1>企业技术领域贡献</h1>
-          <div id="radar"></div>
-        </div>
-        <div class="draw-canvas">
-          <h1>企业领域成果输出量</h1>
-          <div id="bar"></div>
-        </div>
+        <el-row>
+          <div class="draw-canvas">
+            <h1>技术前景</h1>
+            <div id="bar"></div>
+          </div>
+          <div class="draw-canvas">
+            <h1>技术成果输出量</h1>
+            <div id="line"></div>
+          </div>
+        </el-row>
+        <el-row>
+          <div class="draw-canvas">
+            <h1>技术应用领域</h1>
+            <div id="radar"></div>
+          </div>
+          <div class="draw-canvas" style="background-color: #eee;">
+            <!-- <h1>技术热门程度趋势</h1>
+            <div id="pie"></div> -->
+          </div>
+        </el-row>
       </el-row>
       <el-row v-show="show === 3">
         <el-col :span="16">
           <div class="news-card1">
-            <h1 class="title">企业技术标签</h1>
+            <h1 class="title">技术相关企业标签</h1>
             <div id='app' >
               <svg :width='width' :height='height' @mousemove='listener($event)'>
                 <a :href="tag.href" v-for='tag in tags' :key="tag.id">
@@ -124,14 +136,11 @@
               </svg>
             </div>
           </div>
-          <div class="news-card1">
-            <h1 class="title">企业舆情组成对比</h1>
-            <div id="pie"></div>
-          </div>
+          
         </el-col>
         <el-col :span="8">
           <div class="news-card2">
-            <h1 class="title">企业新闻详情</h1>
+            <h1 class="title">技术新闻详情</h1>
             <div class="newsList" v-for="(item, index) in newsList" :key="item.newsId">
               <div class="output-list news-list" @mouseover="changeShowNews(item.newsId)" @mouseout="displayNews()">
                 <span class="order">{{index+1}}</span>
@@ -212,20 +221,38 @@
       displayNews(){
         this.showNews = '';
       },
-      getCompanies(e){
-        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByCompany",{
+      getTechnologies(e) {
+         axios.get("http://127.0.0.1:8888/database/neo4j/findTechnologyChildrens",{
           params:{
-            company : e
+            technology : e
           },
           datatype:'jsonp',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           }
         }).then((res, err) => {
-          if(res){
+          if(res) {
+            this.technologyList = res.data;
+          }
+          else {
+            console.log(err);
+          }
+        })
+      },
+      getCompanies(e) {
+        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByTechnology",{
+          params:{
+            technology : e
+          },
+          datatype:'jsonp',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then((res, err) => {
+          if(res) {
             this.enterpriseList = res.data;
           }
-          else{
+          else {
             console.log(err);
           }
         })
@@ -248,114 +275,16 @@
           }
         })
       },
-      getCompanyDetail(e){
-        axios.get("http://127.0.0.1:8088/enterpriseBaseImport/comName",{
-          params:{
-            enterprise: e
-          },
-          datatype:'jsonp',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          if(res.data[0]){
-            this.enterpriseDetail = res.data[0];
-            this.enterpriseRange = res.data[0].opeRange.split("，");
-          }
-        })
-      },
-      getAbsImport(e){
-        axios.get("http://127.0.0.1:8088/absImport/toName",{
-          params:{
-            name: e
-          },
-          datatype:'jsonp',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          if(res.data[0]){
-            this.absList = res.data;
-            console.log(this.absList)
-          }
-            console.log(err);
-        })
-      },
-      getEnterprises(e){
-          var self = this;
-        axios.get("http://127.0.0.1:8088/absImport/toName",{
-          params:{
-            name : e
-          },
-          datatype:'jsonp',
-          async: true,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          this.nodeList = [];
-           self.enterpriseLength = res.data.length;
-           this.enterpriseList.concat(res.data);
-           for(var enterprise of this.enterpriseList){
-             if(enterprise){
-               this.treeData.push({"name": enterprise.name, "children": []});
-             }
-             this.drawTree(data);
-           }
-        })
-      },
-      getTechnologies(e){
-        var self = this;
-        this.nodeList = [];
-        console.log(e)
-        axios.get("http://127.0.0.1:8088/enterpriseTechnologyImport/comName",{
-          params:{
-            comName : e
-          },
-          datatype:'jsonp',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          console.log(res.data);
-           this.technologyLength = res.data.length;
-           this.technologyList = res.data[0].technologys.split(",");
-           for(var technology of self.technologyList){
-             if(technology){
-               self.nodeList.push({"name": technology.name, "type": 3});
-             }else{
-             }
-           }
-        })
-      },
-      getNews(e){
-        this.nodeList = [];
-        axios.get("http://127.0.0.1:8088/news/nerNames",{
-          params:{
-            nerNames: e
-          },
-          datatype:'jsonp',
-          async: true,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          console.log(res.data)
-           this.newsList = res.data;
-            // console.log(this.newsList);
-            // console.log(err);
-        })
-      },
       getTreeData(e) {
         this.treeData.name = this.entity;
         this.treeData.children = [];
-        this.treeData.children.push({"name": "投资", "children": []});
+        this.treeData.children.push({"name": "企业", "children": []});
         this.treeData.children.push({"name": "技术", "children":[]});
         this.treeData.children.push({"name": "新闻", "children":[]});
 
-        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByCompany",{
+        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByTechnology",{
           params:{
-            company : e
+            technology : e
           },
           datatype:'jsonp',
           headers: {
@@ -368,9 +297,9 @@
             for(var item of res.data) {
               this.treeData.children[0].children.push({"name": item.name, "children": []});
             }
-            axios.get("http://127.0.0.1:8088/enterpriseTechnologyImport/comName",{
+            axios.get("http://127.0.0.1:8888/database/neo4j/findTechnologyChildrens",{
               params:{
-                comName : e
+                technology : e
               },
               datatype:'jsonp',
               headers: {
@@ -378,19 +307,16 @@
               }
             }).then((res, err) => {
               
-              this.technologyLength = res.data.length;
-              this.technologyList = res.data[0].technologys.split(",");
-              // console.log(this.technologyList);
-              for(var technology of this.technologyList){
+              for(var technology of res.data){
                 if(technology){
-                  this.treeData.children[1].children.push({"name": technology, "children":[]});
+                  this.treeData.children[1].children.push({"name": technology.name, "children":[]});
                 }else{
                 }
               }
-              axios.get("http://127.0.0.1:8088/news/nerNames",{
-                params:{
-                  nerNames: e
-                },
+              axios.get("http://127.0.0.1:8088/news/all/1/1",{
+                // params:{
+                //   technology: e
+                // },
                 datatype:'jsonp',
                 async: true,
                 headers: {
@@ -399,7 +325,7 @@
               }).then((res, err) => {
                 console.log(res.data)
                 for(var item of res.data) {
-                  this.treeData.children[2].children.push({"name": item.title, "children": []});
+                  this.treeData.children[2].children.push({"name": item.nerNames, "children": []});
                 }
               console.log(this.treeData);
               this.drawTree(this.treeData);
@@ -480,42 +406,161 @@
 
         radarChart.setOption(option);
       },
+      drawLine() {
+        var echarts = require('echarts/lib/echarts');
+        var lineChart = echarts.init(document.getElementById('line'));
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                type: 'line',
+                smooth: true
+            }]
+        };
+        lineChart.setOption(option);
+      },
       drawBar(){
         var echarts = require('echarts/lib/echarts');
         var barChart = echarts.init(document.getElementById('bar'));
-        var option = {
-            color: ['#3398DB'],
-            tooltip : {
-                trigger: 'axis',
-                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        var posList = [
+            'left', 'right', 'top', 'bottom',
+            'inside',
+            'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+            'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+        ];
+
+        app.configParameters = {
+            rotate: {
+                min: -90,
+                max: 90
+            },
+            align: {
+                options: {
+                    left: 'left',
+                    center: 'center',
+                    right: 'right'
                 }
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '20%',
-                containLabel: true
+            verticalAlign: {
+                options: {
+                    top: 'top',
+                    middle: 'middle',
+                    bottom: 'bottom'
+                }
             },
-            xAxis : [
-                {
-                    type : 'category',
-                    data : ['社交智能', '知识表示', '随机优化', '遗传算法', '计算机性能分析', '吞吐量'],
-                    axisTick: {
-                        alignWithLabel: true
+            position: {
+                options: echarts.util.reduce(posList, function (map, pos) {
+                    map[pos] = pos;
+                    return map;
+                }, {})
+            },
+            distance: {
+                min: 0,
+                max: 100
+            }
+        };
+
+        app.config = {
+            rotate: 90,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 15,
+            onChange: function () {
+                var labelOption = {
+                    normal: {
+                        rotate: app.config.rotate,
+                        align: app.config.align,
+                        verticalAlign: app.config.verticalAlign,
+                        position: app.config.position,
+                        distance: app.config.distance
+                    }
+                };
+                barChart.setOption({
+                    series: [{
+                        label: labelOption
+                    }, {
+                        label: labelOption
+                    }]
+                });
+            }
+        };
+
+
+        var labelOption = {
+            normal: {
+                show: true,
+                position: app.config.position,
+                distance: app.config.distance,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                rotate: app.config.rotate,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
                     }
                 }
-            ],
-            yAxis : [
+            }
+        };
+
+        var option = {
+            color: ['#003366', '#006699'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['阿里巴巴', '腾讯']
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            xAxis: [
                 {
-                    type : 'value'
+                    type: 'category',
+                    axisTick: {show: false},
+                    data: ['2012', '2013', '2014', '2015', '2016']
                 }
             ],
-            series : [
+            yAxis: [
                 {
-                    type:'bar',
-                    barWidth: '60%',
-                    data:[10, 24, 8, 2, 0, 16]
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '阿里巴巴',
+                    type: 'bar',
+                    barGap: 0,
+                    label: labelOption,
+                    data: [320, 332, 301, 334, 390]
+                },
+                {
+                    name: '腾讯',
+                    type: 'bar',
+                    label: labelOption,
+                    data: [220, 182, 191, 234, 290]
                 }
             ]
         };
@@ -617,30 +662,18 @@
             this.tags = tags;
           }
         })
-        
-        // for(let i = 0; i < this.tagsNum; i++){
-        //     let tag = {};
-        //     let k = -1 + (2 * (i + 1) - 1) / this.tagsNum;
-        //     let a = Math.acos(k);
-        //     let b = a * Math.sqrt(this.tagsNum * Math.PI);
-        //     tag.text = i + 'tag';
-        //     tag.x = this.CX +  this.RADIUS * Math.sin(a) * Math.cos(b);
-        //     tag.y = this.CY +  this.RADIUS * Math.sin(a) * Math.sin(b); 
-        //     tag.z = this.RADIUS * Math.cos(a);
-        //     tags.push(tag);
-        // }
-        // this.tags = tags;
     },
     mounted(){
       this.entity = this.$route.query.entity;
       // console.log(this.$route.query.entity);
       this.getCompanies(this.entity);
       this.getNews(this.entity);
-      this.getCompanyDetail(this.entity);
-      this.getAbsImport(this.entity);
+      // this.getCompanyDetail(this.entity);
+      // this.getAbsImport(this.entity);
       this.getTechnologies(this.entity);
       this.getTreeData(this.entity);
       this.drawRadar();
+      this.drawLine();
       this.drawBar();
       this.drawPie();
       setInterval(() => {
@@ -698,18 +731,18 @@
   }
   .draw-canvas {
     display: inline-block;
-    height: 700px;
+    height: 800px;
     width: 45%;
     background-color: #ffffff;
     border-radius: 5px;
     margin-top: 20px;
   }
-  #radar, #bar {
+  #radar, #bar, #line {
     width: 450px;
     height: 700px;
     padding-left: 50px;
   }
-  #radar div, #bar div {
+  #radar div, #bar div, #line div {
     width: 450px !important;
     height: 700px !important;
   }
@@ -802,7 +835,7 @@
     text-align: left;
   }
   #pie {
-    width: 700px;
+    width: 450px;
     height: 450px;
   }
   .newsList {
