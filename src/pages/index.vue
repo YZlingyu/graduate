@@ -38,329 +38,13 @@
         </div>
       </el-row>
 
-      <router-link to="/techniqueChain"><el-button round class="tech-button">查看技术链</el-button></router-link>
-
-      <!------pic------>
-      <!--<div class="pic-group">
-        <router-link to="/techniqueChain"><img class="pic" src="../assets/人工智能产业链.png"></router-link>
-        <img class="pic" src="../assets/新能源产业链.png">
-        <img class="pic" src="../assets/科技金融产业链.png">
-        <img class="pic" src="../assets/智慧医疗产业链.png">
-        <img class="pic" src="../assets/大数据产业链.png">
-      </div>-->
+      <router-link to="/technologyChain"><el-button round class="tech-button">查看技术链</el-button></router-link>
 
     </div>
     <div id="slide2" v-bind:style="{width:width1+'px'}">
       <div style="padding: 20px 50px; box-sizing: border-box; margin: 20px auto; width: 90%;">
+        <h1 class="title">投资关系信息总览</h1>
         <div id="main"></div>
-        <!-- <h2 class="light">新闻信息</h2>
-        <span class="more">查看更多</span>
-        <el-row style="margin-bottom: 20px;">
-          <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="热门新闻" name="first">
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-               <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">5000万用户数据被盗！它能解决让Facebook头疼的问题？</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">据纽约时报、CNBC等多家外媒报道，英国大数据公司“剑桥分析公司（Cambridge Analytica）” 在 2016 年与特朗普竞选团队合作时，竟然私自窃取 5000 万 Facebook 用户的数据！</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">5000万用户数据被盗！它能解决让Facebook头疼的问题？</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">据纽约时报、CNBC等多家外媒报道，英国大数据公司“剑桥分析公司（Cambridge Analytica）” 在 2016 年与特朗普竞选团队合作时，竟然私自窃取 5000 万 Facebook 用户的数据！</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">5000万用户数据被盗！它能解决让Facebook头疼的问题？</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">据纽约时报、CNBC等多家外媒报道，英国大数据公司“剑桥分析公司（Cambridge Analytica）” 在 2016 年与特朗普竞选团队合作时，竟然私自窃取 5000 万 Facebook 用户的数据！</p>
-                </el-col>
-              </el-row> -->
-            <!-- </el-tab-pane>
-            <el-tab-pane label="重点事件" name="second"> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic2.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">第三方影像中心进入跑马圈地时代，B轮融资后「一脉阳光」要怎么走</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">随着医改的推动，独立影像中心政策限制的放开，第三方独立医学影像中心成为一个备受关注的领域。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic2.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">第三方影像中心进入跑马圈地时代，B轮融资后「一脉阳光」要怎么走</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">随着医改的推动，独立影像中心政策限制的放开，第三方独立医学影像中心成为一个备受关注的领域。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic2.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">第三方影像中心进入跑马圈地时代，B轮融资后「一脉阳光」要怎么走</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">随着医改的推动，独立影像中心政策限制的放开，第三方独立医学影像中心成为一个备受关注的领域。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic2.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">第三方影像中心进入跑马圈地时代，B轮融资后「一脉阳光」要怎么走</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">随着医改的推动，独立影像中心政策限制的放开，第三方独立医学影像中心成为一个备受关注的领域。</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-                <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row>
-            </el-tab-pane>
-            <el-tab-pane label="企业动态" name="third">
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-                <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic3.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">特斯拉的荣光时刻：Autopilot大更新、Model 3起量、CEO绩效激励获批</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">在Space X把一辆特斯拉Roadster送上天的喧嚣后，特斯拉陷入了短暂的沉寂。不过近期的各种动作表明，特斯拉正在回到正轨。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic3.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">特斯拉的荣光时刻：Autopilot大更新、Model 3起量、CEO绩效激励获批</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">在Space X把一辆特斯拉Roadster送上天的喧嚣后，特斯拉陷入了短暂的沉寂。不过近期的各种动作表明，特斯拉正在回到正轨。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic3.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">特斯拉的荣光时刻：Autopilot大更新、Model 3起量、CEO绩效激励获批</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">在Space X把一辆特斯拉Roadster送上天的喧嚣后，特斯拉陷入了短暂的沉寂。不过近期的各种动作表明，特斯拉正在回到正轨。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic3.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">特斯拉的荣光时刻：Autopilot大更新、Model 3起量、CEO绩效激励获批</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">在Space X把一辆特斯拉Roadster送上天的喧嚣后，特斯拉陷入了短暂的沉寂。不过近期的各种动作表明，特斯拉正在回到正轨。</p>
-                </el-col>
-              </el-row> -->
-            <!-- </el-tab-pane>
-            <el-tab-pane label="负面新闻" name="fourth">
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-                <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic4.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">还有这种操作？曝亚马逊被国外不法分子利用，成洗钱途径</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">我不相信亚马逊对此并不知情，他们不愿意介入阻止。我相信亚马逊没有审查他们的新账户，纵容他们盗取身份进行税务欺诈</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic4.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">还有这种操作？曝亚马逊被国外不法分子利用，成洗钱途径</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">我不相信亚马逊对此并不知情，他们不愿意介入阻止。我相信亚马逊没有审查他们的新账户，纵容他们盗取身份进行税务欺诈</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic4.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">还有这种操作？曝亚马逊被国外不法分子利用，成洗钱途径</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">我不相信亚马逊对此并不知情，他们不愿意介入阻止。我相信亚马逊没有审查他们的新账户，纵容他们盗取身份进行税务欺诈</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic4.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">还有这种操作？曝亚马逊被国外不法分子利用，成洗钱途径</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">我不相信亚马逊对此并不知情，他们不愿意介入阻止。我相信亚马逊没有审查他们的新账户，纵容他们盗取身份进行税务欺诈</p>
-                </el-col>
-              </el-row> -->
-            <!-- </el-tab-pane>
-            <el-tab-pane label="研究报告" name="fifth">
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-                <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic5.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">网络时代，5步告诉你如何保护个人隐私</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">网络时代的个人信息安全已经成为一个人们愈发关心的话题。那么我们应该如何保护个人隐私呢？来看看国外达人们给出的5个tips吧。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic5.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">网络时代，5步告诉你如何保护个人隐私</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">网络时代的个人信息安全已经成为一个人们愈发关心的话题。那么我们应该如何保护个人隐私呢？来看看国外达人们给出的5个tips吧。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic5.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">网络时代，5步告诉你如何保护个人隐私</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">网络时代的个人信息安全已经成为一个人们愈发关心的话题。那么我们应该如何保护个人隐私呢？来看看国外达人们给出的5个tips吧。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic5.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">网络时代，5步告诉你如何保护个人隐私</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">网络时代的个人信息安全已经成为一个人们愈发关心的话题。那么我们应该如何保护个人隐私呢？来看看国外达人们给出的5个tips吧。</p>
-                </el-col>
-              </el-row> -->
-            <!-- </el-tab-pane>
-            <el-tab-pane label="行业动态" name="sixth">
-              <el-row class="news_row" v-for="item in newsList" :key="item.newsId">
-                <el-col :span="4">
-                  <img src="../assets/404.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">{{item.title}}</h4>
-                  <span class="news_date">{{item.time}}</span>
-                  <p class="news_content">{{item.abs}}</p>
-                </el-col>
-              </el-row> -->
-              <!-- <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic6.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">从人工智能看区块链 ，一再重复的历史 | 正本清源谈区块链</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">对比人工智能和区块链，或许能够帮我们更好地理解区块链会给我们带来什么。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic6.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">从人工智能看区块链 ，一再重复的历史 | 正本清源谈区块链</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">对比人工智能和区块链，或许能够帮我们更好地理解区块链会给我们带来什么。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic6.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">从人工智能看区块链 ，一再重复的历史 | 正本清源谈区块链</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">对比人工智能和区块链，或许能够帮我们更好地理解区块链会给我们带来什么。</p>
-                </el-col>
-              </el-row>
-              <el-row class="news_row">
-                <el-col :span="4">
-                  <img src="../assets/news_pic6.png" class="news_pic">
-                </el-col>
-                <el-col :span="20" class="news_right">
-                  <h4 class="news_title">从人工智能看区块链 ，一再重复的历史 | 正本清源谈区块链</h4>
-                  <span class="news_date">2018-3-22 16:00</span>
-                  <p class="news_content">对比人工智能和区块链，或许能够帮我们更好地理解区块链会给我们带来什么。</p>
-                </el-col>
-              </el-row> -->
-            <!-- </el-tab-pane>
-          </el-tabs>
-        </el-row> -->
       </div>
 
     </div>
@@ -371,6 +55,7 @@
 <script>
   import navFooter from "../components/footer.vue"
   import axios from 'axios'
+  import * as common from '../common/common.js'
   var screenWidth = document.body.clientWidth;
   var screenHeight = document.body.clientHeight;
   //console.log(screenHeight);
@@ -392,7 +77,7 @@
         console.log(this.newsList)
       },
       getNews(){
-        axios.get("http://127.0.0.1:8088/news/all/1/1",{
+        axios.get(common.url2+"news/all/1/1",{
         datatype:'jsonp',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -429,6 +114,110 @@
       },
       changeType(x){
         this.searchType = x;
+      },
+      drawForce(nodes, edges){
+        var width = 1200;
+          var height = 1000;
+
+          var svg = d3.select("#main")
+            .append("svg")
+            .attr("width",width)
+            .attr("height",height);
+
+          var force = d3.layout.force()
+            .nodes(nodes)		//指定节点数组
+            .links(edges)		//指定连线数组
+            .size([width,height])	//指定范围
+            .linkDistance(150)	//指定连线长度
+            .charge(-400);	//相互之间的作用力
+
+          force.start();	//开始作用
+
+          /*console.log(nodes);
+        console.log(edges);*/
+
+    //添加连线
+          var svg_edges = svg.selectAll("line")
+            .data(edges)
+            .enter()
+            .append("line")
+            .style("stroke","#ccc")
+            .style("stroke-width",1)
+            .attr("marker-end", "url(#resolved)" );
+
+          var color = "#ba3232";
+
+    //添加节点
+          var svg_nodes = svg.selectAll("circle")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("r",30)
+            .style("fill",color)
+            .style('stroke',"#9e1e1e")
+            .call(force.drag)	//使得节点能够拖动
+            .on("mouseover",(d,i) => {
+              console.log(this);
+              // this.attr.border = "2px solid #000";
+            });
+
+    //添加描述节点的文字
+          var svg_texts = svg.selectAll(".text")
+            .data(nodes)
+            .enter()
+            .append("text")
+            .style("fill", "white")
+            .attr("dx", -20)
+            .attr("dy", 0)
+            .attr("font-size", 12)
+            .text(function(d){
+              return d.name;
+            });
+
+          var edges_text = svg.selectAll(".linetext")
+            .data(edges)
+            .enter()
+            .append("text")
+            .attr("class","linetext")
+            .style("fill", "black")
+            .attr("font-size", 9)
+            .text("投资");
+    //arrow
+          var marker=
+            svg.append("marker")
+              .attr("id", "resolved")
+              .attr("markerUnits","userSpaceOnUse")
+              .attr("viewBox", "0 -5 10 10")//坐标系的区域
+              .attr("refX",32)//箭头坐标
+              .attr("refY", -1)
+              .attr("markerWidth", 12)//标识的大小
+              .attr("markerHeight", 12)
+              .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+              .attr("stroke-width",2)//箭头宽度
+              .append("path")
+              .attr("d", "M0,-5L10,0L0,5")//箭头的路径
+              .attr('fill','#999999');//箭头颜色
+
+
+          force.on("tick", function(){	//对于每一个时间间隔
+
+    //更新连线坐标
+            svg_edges.attr("x1",function(d){ return d.source.x; })
+              .attr("y1",function(d){ return d.source.y; })
+              .attr("x2",function(d){ return d.target.x; })
+              .attr("y2",function(d){ return d.target.y; });
+
+    //更新节点坐标
+            svg_nodes.attr("cx",function(d){ return d.x; })
+              .attr("cy",function(d){ return d.y; });
+
+    //更新文字坐标
+            svg_texts.attr("x", function(d){ return d.x; })
+              .attr("y", function(d){ return d.y; });
+
+            edges_text.attr("x",function(d){ return (d.source.x + d.target.x) / 2 ; });
+            edges_text.attr("y",function(d){ return (d.source.y + d.target.y) / 2 ; });
+          });
       }
     },
     created(){
@@ -445,133 +234,148 @@
         })()
       };
 
-      let echarts = require('echarts/lib/echarts');
-      let myChart = echarts.init(document.getElementById('main'));
-        var option = {
-          title: {
-              text: '行业投资图谱'
-          },
-          tooltip: {},
-          animationDurationUpdate: 1500,
-          animationEasingUpdate: 'quinticInOut',
-          series : [
-              {
-                  type: 'graph',
-                  layout: 'none',
-                  symbolSize: 50,
-                  roam: true,
-                  label: {
-                      normal: {
-                          show: true
-                      }
-                  },
-                  edgeSymbol: ['circle', 'arrow'],
-                  edgeSymbolSize: [4, 10],
-                  edgeLabel: {
-                      normal: {
-                          textStyle: {
-                              fontSize: 20
-                          }
-                      }
-                  },
-                  data: [{
-                      name: '阿里巴巴',
-                      x: 300,
-                      y: 300
-                  }, {
-                      name: '字节跳动',
-                      x: 800,
-                      y: 300
-                  }, {
-                      name: '小桔科技',
-                      x: 550,
-                      y: 100
-                  }, {
-                      name: '腾讯科技',
-                      x: 550,
-                      y: 500
-                  }],
-                  // links: [],
-                  links: [{
-                      symbolSize: [5, 20],
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: {
-                              width: 5,
-                              curveness: 0.2
-                          }
-                      }
-                  }, {
-                      source: '阿里巴巴',
-                      target: '字节跳动',
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: { curveness: 0.2 }
-                      }
-                  }, {
-                      source: '字节跳动',
-                      target: '腾讯科技',
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: { curveness: 0.2 }
-                      }
-                  }, {
-                      source: '小桔科技',
-                      target: '腾讯科技',
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: { curveness: 0.2 }
-                      }
-                  }, {
-                      source: '阿里巴巴',
-                      target: '小桔科技',
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: { curveness: 0.2 }
-                      }
-                  }, {
-                      source: '小桔科技',
-                      target: '字节跳动',
-                      label: {
-                          normal: {
-                              show: true
-                          }
-                      },
-                      lineStyle: {
-                          normal: { curveness: 0.2 }
-                      }
-                  }],
-                  lineStyle: {
-                      normal: {
-                          opacity: 0.9,
-                          width: 2,
-                          curveness: 0
-                      }
-                  }
-              }
-          ]
-      };
-        myChart.setOption(option);
+      axios.get(common.url1+"findRGGAll",{
+          datatype:'jsonp',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then((res, err) => {
+          var nodes=[];
+          for(var item of res.data.nodes){
+            nodes.push({"name":item.slice(0,4)})
+          }
+          var edges = res.data.Relations;
+          
+            this.drawForce(nodes, edges);
+        })
+
+      // let echarts = require('echarts/lib/echarts');
+      // let myChart = echarts.init(document.getElementById('main'));
+      //   var option = {
+      //     title: {
+      //         text: '行业投资图谱'
+      //     },
+      //     tooltip: {},
+      //     animationDurationUpdate: 1500,
+      //     animationEasingUpdate: 'quinticInOut',
+      //     series : [
+      //         {
+      //             type: 'graph',
+      //             layout: 'none',
+      //             symbolSize: 50,
+      //             roam: true,
+      //             label: {
+      //                 normal: {
+      //                     show: true
+      //                 }
+      //             },
+      //             edgeSymbol: ['circle', 'arrow'],
+      //             edgeSymbolSize: [4, 10],
+      //             edgeLabel: {
+      //                 normal: {
+      //                     textStyle: {
+      //                         fontSize: 20
+      //                     }
+      //                 }
+      //             },
+      //             data: [{
+      //                 name: '阿里巴巴',
+      //                 x: 600,
+      //                 y: 300
+      //             }, {
+      //                 name: '字节跳动',
+      //                 x: 800,
+      //                 y: 800
+      //             }, {
+      //                 name: '小桔科技',
+      //                 x: 550,
+      //                 y: 100
+      //             }, {
+      //                 name: '腾讯科技',
+      //                 x: 550,
+      //                 y: 500
+      //             }],
+      //             // links: [],
+      //             links: [{
+      //                 symbolSize: [5, 20],
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: {
+      //                         width: 5,
+      //                         curveness: 0.2
+      //                     }
+      //                 }
+      //             }, {
+      //                 source: '阿里巴巴',
+      //                 target: '字节跳动',
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: { curveness: 0.2 }
+      //                 }
+      //             }, {
+      //                 source: '字节跳动',
+      //                 target: '腾讯科技',
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: { curveness: 0.2 }
+      //                 }
+      //             }, {
+      //                 source: '小桔科技',
+      //                 target: '腾讯科技',
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: { curveness: 0.2 }
+      //                 }
+      //             }, {
+      //                 source: '阿里巴巴',
+      //                 target: '小桔科技',
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: { curveness: 0.2 }
+      //                 }
+      //             }, {
+      //                 source: '小桔科技',
+      //                 target: '字节跳动',
+      //                 label: {
+      //                     normal: {
+      //                         show: true
+      //                     }
+      //                 },
+      //                 lineStyle: {
+      //                     normal: { curveness: 0.2 }
+      //                 }
+      //             }],
+      //             lineStyle: {
+      //                 normal: {
+      //                     opacity: 0.9,
+      //                     width: 2,
+      //                     curveness: 0
+      //                 }
+      //             }
+      //         }
+      //     ]
+      // };
+      //   myChart.setOption(option);
     },
     watch: {
       width1 (val) {
@@ -782,6 +586,10 @@
   }
   #main {
     width: 1200px;
-    height: 500px;
+    height: 1000px;
+  }
+  /* force */
+  .text {
+    font-size: 9px;
   }
 </style>

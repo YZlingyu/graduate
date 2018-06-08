@@ -115,7 +115,7 @@
       <el-row v-show="show === 3">
         <el-col :span="16">
           <div class="news-card1">
-            <h1 class="title">企业技术标签</h1>
+            <h1 class="title">企业领域标签</h1>
             <div id='app' >
               <svg :width='width' :height='height' @mousemove='listener($event)'>
                 <a :href="tag.href" v-for='tag in tags' :key="tag.id">
@@ -153,6 +153,7 @@
   import rightNav from "../components/rightNav.vue"
   import axios from 'axios'
   import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
+  import * as common from '../common/common.js'
   export default {
     data() {
       return {
@@ -213,7 +214,7 @@
         this.showNews = '';
       },
       getCompanies(e){
-        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByCompany",{
+        axios.get(common.url1+"findCompanyByCompany",{
           params:{
             company : e
           },
@@ -231,7 +232,7 @@
         })
       },
       getNews(e){
-        axios.get("http://127.0.0.1:8088/news/nerNames",{
+        axios.get(common.url2+"news/nerNames",{
           params:{
             nerNames : e
           },
@@ -249,7 +250,7 @@
         })
       },
       getCompanyDetail(e){
-        axios.get("http://127.0.0.1:8088/enterpriseBaseImport/comName",{
+        axios.get(common.url2+"enterpriseBaseImport/comName",{
           params:{
             enterprise: e
           },
@@ -265,7 +266,7 @@
         })
       },
       getAbsImport(e){
-        axios.get("http://127.0.0.1:8088/absImport/toName",{
+        axios.get(common.url2+"absImport/toName",{
           params:{
             name: e
           },
@@ -283,7 +284,7 @@
       },
       getEnterprises(e){
           var self = this;
-        axios.get("http://127.0.0.1:8088/absImport/toName",{
+        axios.get(common.url2+"absImport/toName",{
           params:{
             name : e
           },
@@ -308,7 +309,7 @@
         var self = this;
         this.nodeList = [];
         console.log(e)
-        axios.get("http://127.0.0.1:8088/enterpriseTechnologyImport/comName",{
+        axios.get(common.url2+"enterpriseTechnologyImport/comName",{
           params:{
             comName : e
           },
@@ -330,7 +331,7 @@
       },
       getNews(e){
         this.nodeList = [];
-        axios.get("http://127.0.0.1:8088/news/nerNames",{
+        axios.get(common.url2+"news/nerNames",{
           params:{
             nerNames: e
           },
@@ -590,7 +591,7 @@
     created(){//初始化标签位置
         var self = this;
         let tags=[];
-        axios.get("http://127.0.0.1:8088/enterpriseBaseImport/comName",{
+        axios.get(common.url2+"enterpriseBaseImport/comName",{
           params:{
             enterprise: this.$route.query.entity
           },

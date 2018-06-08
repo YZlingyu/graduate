@@ -8,8 +8,11 @@ const state = {
   isLogin: false
 }
 const mutations = {
-  inputUsername(state) {
-    
+  checkLogin(state) {
+    if(state.name === "yangzhuo" && state.password === "123456") {
+      state.isLogin = true;
+      window.location.href = "../";
+    }
   }
 }
 export default new Vuex.Store({  

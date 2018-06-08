@@ -49,7 +49,7 @@
         </el-col>
         <el-col :span="8">
           <div class="card basic-info">
-            <h1 class="title">企业信息</h1>
+            <h1 class="title">技术相关信息</h1>
             <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick" class="tab-left">
           <el-tab-pane label="相关实体   " name="first">
             <div class="company-link">
@@ -58,7 +58,7 @@
               <div class="output-list" v-for="(item, index) in enterpriseList" :key="item.id">
                 <router-link :to="{path: './company', query:{entity:item.name}}">
                   <div class="order">{{ index+1 }}</div>
-                  <span class="output-word">{{item.name}}</span>
+                  <span class="output-word">{{item}}</span>
                   <span class="tag" v-if="item.no">{{item.no}}</span>
                 </router-link>
               </div>
@@ -103,25 +103,29 @@
         </el-col>
       </el-row>
       <el-row v-show="show === 2">
-        <el-row>
+        <el-row style="display: flex; justify-content: space-between;width: 1300px;">
+          <div class="draw-canvas">
+            <h1>技术产业链</h1>
+            <div id="company-tree"></div>
+          </div>
           <div class="draw-canvas">
             <h1>技术前景</h1>
             <div id="bar"></div>
           </div>
+        </el-row>
+        <el-row style="display: flex; justify-content: space-between;width: 1300px;">
           <div class="draw-canvas">
             <h1>技术成果输出量</h1>
             <div id="line"></div>
           </div>
-        </el-row>
-        <el-row>
           <div class="draw-canvas">
             <h1>技术应用领域</h1>
             <div id="radar"></div>
           </div>
-          <div class="draw-canvas" style="background-color: #eee;">
-            <!-- <h1>技术热门程度趋势</h1>
-            <div id="pie"></div> -->
-          </div>
+          <!-- <div class="draw-canvas" style="background-color: #eee;">
+            <h1>技术热门程度趋势</h1>
+            <div id="pie"></div>
+          </div> -->
         </el-row>
       </el-row>
       <el-row v-show="show === 3">
@@ -161,6 +165,7 @@
   import forceGraph from "../components/forceGraph4.vue"
   import rightNav from "../components/rightNav.vue"
   import axios from 'axios'
+  import * as common from '../common/common.js'
   import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
   export default {
     data() {
@@ -172,6 +177,7 @@
         enterpriseRange: '',
         technologyList: [],
         technologyLength: '',
+        comList: [],
         newsList: [],
         entity: '',
         absList: [],
@@ -185,8 +191,42 @@
         speedX:Math.PI/360,
         speedY:Math.PI/360,
         tags: [],
-        showNews: ''
+        showNews: '',
+        companyTree: {}
       }
+    },
+
+    created(){//初始化标签位置
+    console.log(common.url1)
+        var self = this;
+        let tags=[];
+        axios.get(common.url1+"findComByTech",{
+          params:{
+            technologyName: this.$route.query.entity
+          },
+          datatype:'jsonp',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then((res, err) => {
+          // console.log(res.data);
+          if(res.data){
+            this.comList = res.data;
+             for(let i = 0; i < this.comList.length; i++){
+                let tag = {};
+                let k = -1 + (2 * (i + 1) - 1) / this.tagsNum;
+                let a = Math.acos(k);
+                let b = a * Math.sqrt(this.tagsNum * Math.PI);
+                tag.text = this.comList[i];
+                tag.x = this.CX +  this.RADIUS * Math.sin(a) * Math.cos(b);
+                tag.y = this.CY +  this.RADIUS * Math.sin(a) * Math.sin(b); 
+                tag.z = this.RADIUS * Math.cos(a);
+                tags.push(tag);
+            }
+            this.tags = tags;
+            console.log(tags);
+          }
+        })
     },
     computed:{
         CX(){
@@ -222,7 +262,7 @@
         this.showNews = '';
       },
       getTechnologies(e) {
-         axios.get("http://127.0.0.1:8888/database/neo4j/findTechnologyChildrens",{
+         axios.get(common.url1+"findTechnologyChildrens",{
           params:{
             technology : e
           },
@@ -240,9 +280,9 @@
         })
       },
       getCompanies(e) {
-        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByTechnology",{
+        axios.get(common.url1+"findComByTech",{
           params:{
-            technology : e
+            technologyName : e
           },
           datatype:'jsonp',
           headers: {
@@ -256,11 +296,12 @@
             console.log(err);
           }
         })
+
       },
       getNews(e){
-        axios.get("http://127.0.0.1:8088/news/nerNames",{
+        axios.get(common.url1+"findNewsByTechnology",{
           params:{
-            nerNames : e
+            technologyName : e
           },
           datatype:'jsonp',
           headers: {
@@ -268,6 +309,7 @@
           }
         }).then((res, err) => {
           if(res) {
+            console.log(res.data);
             this.newsList = res.data;
           }
           else {
@@ -282,9 +324,9 @@
         this.treeData.children.push({"name": "技术", "children":[]});
         this.treeData.children.push({"name": "新闻", "children":[]});
 
-        axios.get("http://127.0.0.1:8888/database/neo4j/findCompanyByTechnology",{
+        axios.get(common.url1+"findComByTech",{
           params:{
-            technology : e
+            technologyName : e
           },
           datatype:'jsonp',
           headers: {
@@ -295,9 +337,9 @@
           if(res){
             // console.log(res.data)
             for(var item of res.data) {
-              this.treeData.children[0].children.push({"name": item.name, "children": []});
+              this.treeData.children[0].children.push({"name": item, "children": []});
             }
-            axios.get("http://127.0.0.1:8888/database/neo4j/findTechnologyChildrens",{
+            axios.get(common.url1+"findTechnologyChildrens",{
               params:{
                 technology : e
               },
@@ -313,22 +355,22 @@
                 }else{
                 }
               }
-              axios.get("http://127.0.0.1:8088/news/all/1/1",{
-                // params:{
-                //   technology: e
-                // },
+              axios.get(common.url1+"findNewsByTechnology",{
+                params:{
+                  technologyName: e
+                },
                 datatype:'jsonp',
                 async: true,
                 headers: {
                   'Content-Type': 'application/x-www-form-urlencoded',
                 }
               }).then((res, err) => {
-                console.log(res.data)
+                // console.log(res.data)
                 for(var item of res.data) {
-                  this.treeData.children[2].children.push({"name": item.nerNames, "children": []});
+                  this.treeData.children[2].children.push({"name": item.title, "children": []});
                 }
-              console.log(this.treeData);
-              this.drawTree(this.treeData);
+              // console.log(this.treeData);
+              this.drawTree("main",this.treeData);
               })
             })
           }
@@ -337,9 +379,29 @@
           }
         })
       },
-      drawTree(data){
+      getCompanyTreeData(e) {
+        axios.get(common.url1+"findComByTechInTChain",{
+          params:{
+            technologyName : e
+          },
+          datatype:'jsonp',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }).then((res, err) => {
+          if(res) {
+            console.log(res.data)
+              this.companyTree = res.data;
+            this.drawTree2("company-tree",this.companyTree);
+          }
+          else {
+            console.log(err);
+          }
+        })
+      },
+      drawTree(id, data){
         var echarts = require('echarts/lib/echarts');
-        var myChart = echarts.init(document.getElementById('main'));
+        var myChart = echarts.init(document.getElementById(id));
         myChart.showLoading();
         myChart.hideLoading();
 
@@ -363,7 +425,41 @@
                       symbol: 'emptyCircle',
                       symbolSize: 7,
                       initialTreeDepth: 1,
-                      animationDurationUpdate: 750
+                      animationDurationUpdate: 750,
+                      expandAndCollapse: true,
+                  }
+              ]
+          }
+          myChart.setOption(option);
+      },
+      drawTree2(id, data){
+        var echarts = require('echarts/lib/echarts');
+        var myChart = echarts.init(document.getElementById(id));
+        myChart.showLoading();
+        myChart.hideLoading();
+
+          var option = {
+              tooltip: {
+                  trigger: 'item',
+                  triggerOn: 'mousemove'
+              },
+              series: [
+                  {
+                      type: 'tree',
+                      legend: {
+                        width: 700,
+                        height: 300,
+                        orient: 'horizontal'
+                      },
+                      data: [data],
+                      top: '18%',
+                      bottom: '14%',
+                      layout: 'radial',
+                      symbol: 'emptyCircle',
+                      symbolSize: 7,
+                      initialTreeDepth: 2,
+                      animationDurationUpdate: 750,
+                      expandAndCollapse: true,
                   }
               ]
           }
@@ -632,37 +728,6 @@
         location.reload();
       }
     },
-    created(){//初始化标签位置
-        var self = this;
-        let tags=[];
-        axios.get("http://127.0.0.1:8088/enterpriseBaseImport/comName",{
-          params:{
-            enterprise: this.$route.query.entity
-          },
-          datatype:'jsonp',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
-        }).then((res, err) => {
-          if(res.data[0]){
-            this.enterpriseDetail = res.data[0];
-            this.enterpriseRange = res.data[0].opeRange.split("，");
-            console.log(this.enterpriseRange.length)
-             for(let i = 0; i < this.enterpriseRange.length; i++){
-                let tag = {};
-                let k = -1 + (2 * (i + 1) - 1) / this.tagsNum;
-                let a = Math.acos(k);
-                let b = a * Math.sqrt(this.tagsNum * Math.PI);
-                tag.text = this.enterpriseRange[i];
-                tag.x = this.CX +  this.RADIUS * Math.sin(a) * Math.cos(b);
-                tag.y = this.CY +  this.RADIUS * Math.sin(a) * Math.sin(b); 
-                tag.z = this.RADIUS * Math.cos(a);
-                tags.push(tag);
-            }
-            this.tags = tags;
-          }
-        })
-    },
     mounted(){
       this.entity = this.$route.query.entity;
       // console.log(this.$route.query.entity);
@@ -675,7 +740,8 @@
       this.drawRadar();
       this.drawLine();
       this.drawBar();
-      this.drawPie();
+      this.getCompanyTreeData(this.entity);
+      // this.drawPie();
       setInterval(() => {
           this.rotateX(this.speedX);
           this.rotateY(this.speedY);
@@ -737,12 +803,15 @@
     border-radius: 5px;
     margin-top: 20px;
   }
-  #radar, #bar, #line {
+  #radar, #bar, #line, #company-tree {
     width: 450px;
     height: 700px;
     padding-left: 50px;
   }
-  #radar div, #bar div, #line div {
+  #company-tree {
+    width: 500px;
+  }
+  #radar div, #bar div, #line div, #company-tree div {
     width: 450px !important;
     height: 700px !important;
   }

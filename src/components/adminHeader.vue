@@ -4,7 +4,7 @@
       <img src="../assets/logo.png" class="logo">
       <span class="name">中关村四方现代服务产业技术创新战略联盟</span>
       <span class="loggout">注销</span>
-      <span class="user">杨卓</span>
+      <router-link to="./admin"><span class="user">杨卓</span></router-link>
     </router-link>
   </div>
 </template>

@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import echarts from 'echarts'
 import Vuex from 'vuex' 
 import store from './store'
+import * as common from './common/common.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
