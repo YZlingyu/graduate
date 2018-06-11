@@ -18,7 +18,7 @@
                 <p>Label:</p>
               </el-col>
               <el-col :span="14">
-                <el-input v-model="label" placeholder="" :disabled="true"></el-input>
+                <el-input class="deep" v-model="label" placeholder="" :disabled="true"></el-input>
               </el-col>
             </el-row>
             <div style="height:8px;"></div>
@@ -225,11 +225,11 @@
             </el-row>
             <el-row>
               <div style="height:420px;overflow:auto;overflow-x:hidden;">
-                <el-table ref="multipleTable" :data="companies" tooltip-effect="dark" style="width: 100%;margin-left:40px;" @select="selectone">
+                <el-table ref="multipleTable" :data="companies" tooltip-effect="dark" style="width: 100%;margin-left:0px;" @select="selectone">
                   <el-table-column type="selection" width="60">
                   </el-table-column>
-                  <el-table-column label="可选公司" width="200">
-                    <template slot-scope="scope">{{ scope.row.name }}</template>
+                  <el-table-column label="可选公司" width="280">
+                    <template slot-scope="scope">{{ scope.row.com_name }}</template>
                   </el-table-column>
                 </el-table>
               </div>
@@ -247,7 +247,7 @@
 
 <script>
 import axios from "axios";
-let qs = require('qs'); 
+let qs = require("qs");
 export default {
   data() {
     return {
@@ -264,94 +264,36 @@ export default {
       a_rname: "",
 
       rfather: "",
+      rfatherid: "",
       rson: "",
+      rsonid: "",
       rlabel: "",
       rname: "",
+      oldname: "",
       a_rfather: "",
       a_rson: "",
       a_rrlabel: "",
       a_rrname: "",
 
-      companies: [
-        {
-          date: "2016-05-03",
-          name: "公司1",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-02",
-          name: "公司2",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "公司3",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司4",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司5",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司6",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司7",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司8",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司9",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司10",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司11",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司12",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "公司13",
-          address: "上海市普陀区金沙江路 1518 弄"
-        }
-      ]
+      companies: []
     };
   },
   methods: {
-    handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
-    },
     handleClick(tab, event) {
+      //点击tab
+      var that = this;
       console.log(tab, event);
       document.getElementById("add").style.display = "none";
       document.getElementById("r_add").style.display = "none";
+      axios
+        .post("http://10.108.211.136:5000/find_enterprise")
+        .then(function(response) {
+          that.companies = response.data.enterprises;
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     },
     draw(nodes, edges) {
       var that = this;
@@ -386,7 +328,9 @@ export default {
         .style("stroke-width", 3.4)
         .on("click", function(d, i) {
           that.rfather = edges[i].source.name;
+          that.rfatherid = edges[i].source.id;
           that.rson = edges[i].target.name;
+          that.rsonid = edges[i].target.id;
           that.rlabel = edges[i].rel;
           that.rname = edges[i].name;
           that.activeName = "second";
@@ -504,16 +448,20 @@ export default {
       //点击保存
       var that = this;
       axios
-        .post("http://10.108.211.136:5000/mod_node",qs.stringify({
-          // params: {
+        .post(
+          "http://10.108.211.136:5000/mod_node",
+          qs.stringify({
+            // params: {
             id: this.id,
             name: this.name
-        })
+          })
         )
         .then(function(response) {
           console.log(response);
           that.disabledInput = true;
           alert("修改成功！");
+          document.getElementById("graph").innerHTML = "";
+          that.draw(response.data.nodes, response.data.links);
         })
         .catch(function(error) {
           console.log(error);
@@ -523,12 +471,34 @@ export default {
 
     addyes() {
       //点击确定
-      alert("添加成功！");
-      document.getElementById("add").style.display = "none";
-      this.a_rlabel = "";
-      this.a_rname = "";
-      this.a_label = "";
-      this.a_name = "";
+      var that = this;
+      axios
+        .post(
+          "http://10.108.211.136:5000/add_node",
+          qs.stringify({
+            // params: {
+            father: this.id,
+            name: this.a_name,
+            label: this.a_label,
+            r_type: this.a_rlabel,
+            r_name: this.a_rname
+          })
+        )
+        .then(function(response) {
+          console.log(response);
+          alert("添加成功！");
+          document.getElementById("add").style.display = "none";
+          that.a_rlabel = "";
+          that.a_rname = "";
+          that.a_label = "";
+          that.a_name = "";
+          document.getElementById("graph").innerHTML = "";
+          that.draw(response.data.nodes, response.data.links);
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     },
 
     deletee() {
@@ -539,10 +509,25 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          var that = this;
+          axios
+            .post(
+              "http://10.108.211.136:5000/del_node",
+              qs.stringify({
+                // params: {
+                id: this.id
+              })
+            )
+            .then(function(response) {
+              console.log(response);
+              alert("删除成功！");
+              document.getElementById("graph").innerHTML = "";
+              that.draw(response.data.nodes, response.data.links);
+            })
+            .catch(function(error) {
+              console.log(error);
+              alert("error!");
+            });
         })
         .catch(() => {
           this.$message({
@@ -559,21 +544,65 @@ export default {
     r_modify() {
       //点击修改
       this.disabledInput2 = false;
+      this.oldname = this.rname;
     },
     r_save() {
       //点击保存
-      this.disabledInput2 = true;
-      alert("修改成功！");
+      var that = this;
+      axios
+        .post(
+          "http://10.108.211.136:5000/mod_rel",
+          qs.stringify({
+            // params: {
+            father: this.rfatherid,
+            son: this.rsonid,
+            r_type: this.rlabel,
+            r_name: this.oldname,
+            new_name: this.rname
+          })
+        )
+        .then(function(response) {
+          console.log(response);
+          that.disabledInput2 = true;
+          alert("修改成功！");
+          document.getElementById("graph").innerHTML = "";
+          that.draw(response.data.nodes, response.data.links);
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     },
 
     r_addyes() {
       //点击确定
-      alert("添加成功！");
-      document.getElementById("r_add").style.display = "none";
-      this.a_rfather = "";
-      this.a_rson = "";
-      this.a_rrlabel = "";
-      this.a_rrname = "";
+      var that = this;
+      axios
+        .post(
+          "http://10.108.211.136:5000/add_rel",
+          qs.stringify({
+            // params: {
+            father: this.a_rfather,
+            son: this.a_rson,
+            r_type: this.a_rrlabel,
+            r_name: this.a_rrname
+          })
+        )
+        .then(function(response) {
+          console.log(response);
+          alert("添加成功！");
+          document.getElementById("r_add").style.display = "none";
+          that.a_rfather = "";
+          that.a_rson = "";
+          that.a_rrlabel = "";
+          that.a_rrname = "";
+          document.getElementById("graph").innerHTML = "";
+          that.draw(response.data.nodes, response.data.links);
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     },
 
     r_deletee() {
@@ -584,10 +613,27 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          var that = this;
+          axios
+            .post(
+              "http://10.108.211.136:5000/del_rel",
+              qs.stringify({
+                father: this.rfatherid,
+                son: this.rsonid,
+                r_type: this.rlabel,
+                r_name: this.rname
+              })
+            )
+            .then(function(response) {
+              console.log(response);
+              alert("删除成功！");
+              document.getElementById("graph").innerHTML = "";
+              that.draw(response.data.nodes, response.data.links);
+            })
+            .catch(function(error) {
+              console.log(error);
+              alert("error!");
+            });
         })
         .catch(() => {
           this.$message({
@@ -621,7 +667,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .admin-graph-background {
   background-color: #ffffff;
   border-radius: 5px;
@@ -649,7 +695,7 @@ p {
   margin-left: 20px;
   margin-bottom: 10px;
 }
-.el-input.is-disabled .el-input__inner {
+.deep > .el-input__inner {
   color: #717275;
 }
 </style>
