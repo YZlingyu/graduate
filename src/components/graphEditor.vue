@@ -502,20 +502,22 @@ export default {
     save() {
       //点击保存
       var that = this;
-      const postData = {
-        id: this.id,
-        name: this.name
-      };
-      axios.post("http://10.108.211.136:5000/mod_node", postData).then(
-        response => {
-          alert(response.data);
+      axios
+        .get("http://10.108.211.136:5000/mod_node", {
+          params: {
+            id: this.id,
+            name: this.name
+          }
+        })
+        .then(function(response) {
+          console.log(response);
           that.disabledInput = true;
           alert("修改成功！");
-        },
-        response => {
-          alert("出错啦！");
-        }
-      );
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     },
 
     addyes() {
@@ -594,8 +596,8 @@ export default {
         });
     },
 
-
-    selectone(selection, row){//每勾选一个触发一次
+    selectone(selection, row) {
+      //每勾选一个触发一次
       //alert(row.name);
     }
   },
