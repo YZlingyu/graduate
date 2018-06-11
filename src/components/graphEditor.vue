@@ -247,6 +247,7 @@
 
 <script>
 import axios from "axios";
+let qs = require('qs'); 
 export default {
   data() {
     return {
@@ -503,12 +504,12 @@ export default {
       //点击保存
       var that = this;
       axios
-        .get("http://10.108.211.136:5000/mod_node", {
-          params: {
+        .post("http://10.108.211.136:5000/mod_node",qs.stringify({
+          // params: {
             id: this.id,
             name: this.name
-          }
         })
+        )
         .then(function(response) {
           console.log(response);
           that.disabledInput = true;
