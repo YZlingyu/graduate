@@ -205,9 +205,9 @@
               </el-row>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="公司选择" name="third">
+          <el-tab-pane label="企业选择" name="third">
             <el-row>
-              <div class="title">填入要添加公司的节点ID</div>
+              <div class="title">填入要添加企业的节点ID</div>
             </el-row>
             <el-row>
               <el-col :span="8">
@@ -221,14 +221,14 @@
             <hr/>
             <div style="height:8px;"></div>
             <el-row>
-              <div class="title">勾选要添加的公司:</div>
+              <div class="title">勾选要添加的企业:</div>
             </el-row>
             <el-row>
               <div style="height:420px;overflow:auto;overflow-x:hidden;">
-                <el-table ref="multipleTable" :data="companies" tooltip-effect="dark" style="width: 100%;margin-left:0px;" @select="selectone">
+                <el-table ref="multipleTable" :data="companies" tooltip-effect="dark" style="width: 100%;margin-left:0px;" @selection-change="handleSelectionChange">
                   <el-table-column type="selection" width="60">
                   </el-table-column>
-                  <el-table-column label="可选公司" width="280">
+                  <el-table-column label="可选企业" width="280">
                     <template slot-scope="scope">{{ scope.row.com_name }}</template>
                   </el-table-column>
                 </el-table>
@@ -236,7 +236,7 @@
             </el-row>
             <div style="height:20px;"></div>
             <el-row>
-              <el-button type="primary" plain size="medium" @click="">确定</el-button>
+              <el-button type="primary" plain size="medium" @click="addcompany">确定</el-button>
             </el-row>
           </el-tab-pane>
         </el-tabs>
@@ -275,7 +275,8 @@ export default {
       a_rrlabel: "",
       a_rrname: "",
 
-      companies: []
+      companies: [],
+      multipleSelection: []
     };
   },
   methods: {
@@ -643,9 +644,33 @@ export default {
         });
     },
 
-    selectone(selection, row) {
-      //每勾选一个触发一次
-      //alert(row.name);
+    handleSelectionChange(val) {
+      //当选择项发生变化时会触发该事件
+      this.multipleSelection = val;
+    },
+    addcompany() {
+      //点击确定添加公司
+      var that = this;
+      console.log(this.multipleSelection);
+      axios
+        .post(
+          "http://10.108.211.136:5000/add_enterprise",
+          qs.stringify({
+            father: this.id,
+            r_type: this.name,
+            enterprises: JSON.stringify(this.multipleSelection)
+          })
+        )
+        .then(function(response) {
+          console.log(response);
+          alert("添加成功！");
+          document.getElementById("graph").innerHTML = "";
+          that.draw(response.data.nodes, response.data.links);
+        })
+        .catch(function(error) {
+          console.log(error);
+          alert("error!");
+        });
     }
   },
   created() {
