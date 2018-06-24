@@ -13,14 +13,14 @@
             <el-row>
               <div class="title">基本信息</div>
             </el-row>
-            <el-row>
+            <!-- <el-row>
               <el-col :span="8">
                 <p>Label:</p>
               </el-col>
               <el-col :span="14">
                 <el-input class="deep" v-model="label" placeholder="" :disabled="true"></el-input>
               </el-col>
-            </el-row>
+            </el-row> -->
             <div style="height:8px;"></div>
             <el-row>
               <el-col :span="8">
@@ -93,7 +93,14 @@
                   <p>R_Label:</p>
                 </el-col>
                 <el-col :span="14">
-                  <el-input v-model="a_rlabel" placeholder=""></el-input>
+                  <el-select v-model="a_rlabel" placeholder="请选择">
+                    <el-option
+                      v-for="item in r_labelOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-col>
               </el-row>
               <div style="height:8px;"></div>
@@ -134,14 +141,14 @@
               </el-col>
             </el-row>
             <div style="height:8px;"></div>
-            <el-row>
+            <!-- <el-row>
               <el-col :span="8">
                 <p>R_Label:</p>
               </el-col>
               <el-col :span="14">
                 <el-input v-model="rlabel" placeholder="" :disabled="true"></el-input>
               </el-col>
-            </el-row>
+            </el-row> -->
             <div style="height:8px;"></div>
             <el-row>
               <el-col :span="8">
@@ -187,7 +194,14 @@
                   <p>R_Label:</p>
                 </el-col>
                 <el-col :span="14">
-                  <el-input v-model="a_rrlabel" placeholder=""></el-input>
+                  <el-select v-model="a_rrlabel" placeholder="请选择">
+                    <el-option
+                      v-for="item in rr_labelOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-col>
               </el-row>
               <div style="height:8px;"></div>
@@ -247,6 +261,7 @@
 
 <script>
 import axios from "axios";
+import * as common from "../common/common.js"
 let qs = require("qs");
 export default {
   data() {
@@ -262,6 +277,11 @@ export default {
       a_name: "",
       a_rlabel: "",
       a_rname: "",
+      r_labelOptions: [{
+        value: 'instance',
+        label: 'instance'
+      }],
+      level: 0,
 
       rfather: "",
       rfatherid: "",
@@ -274,6 +294,10 @@ export default {
       a_rson: "",
       a_rrlabel: "",
       a_rrname: "",
+      rr_labelOptions: [{
+        value: 'instance',
+        label: 'instance'
+      }],
 
       companies: [],
       multipleSelection: []
@@ -376,11 +400,13 @@ export default {
         // .style("stroke-width", 1)
         .call(force.drag) ////使得节点能够拖动
         .on("click", function(d, i) {
+          console.log(d)
           that.name = nodes[i].name;
           that.id = nodes[i].id;
           that.label = nodes[i].type;
           that.father = nodes[i].father;
           that.activeName = "first";
+          that.level = nodes[i].level;
           document.getElementById("add").style.display = "none";
         });
 
@@ -449,20 +475,18 @@ export default {
       //点击保存
       var that = this;
       axios
-        .post(
-          "http://10.108.211.136:5000/mod_node",
-          qs.stringify({
-            // params: {
-            id: this.id,
-            name: this.name
-          })
+        .post(common.url3+"mod_node/"+this.id+"/"+this.name
+          // qs.stringify({
+          //   id: this.id,
+          //   name: this.name
+          // })
         )
         .then(function(response) {
-          console.log(response);
+          console.log(response+1111111);
           that.disabledInput = true;
           alert("修改成功！");
           document.getElementById("graph").innerHTML = "";
-          that.draw(response.data.nodes, response.data.links);
+          that.draw(response.data[0], response.data[1]);
         })
         .catch(function(error) {
           console.log(error);
@@ -472,18 +496,21 @@ export default {
 
     addyes() {
       //点击确定
+      console.log(this.level);
       var that = this;
       axios
         .post(
-          "http://10.108.211.136:5000/add_node",
-          qs.stringify({
-            // params: {
-            father: this.id,
-            name: this.a_name,
-            label: this.a_label,
-            r_type: this.a_rlabel,
-            r_name: this.a_rname
-          })
+          common.url3+"add_node/"+this.id+"/"+this.level+"/"+
+          this.a_name+"/"+this.a_label+"/"+this.a_rlabel+"/"+this.a_r_name
+          // qs.stringify({
+          //   // params: {
+          //   father: this.id,
+          //   // father_level: this.
+          //   name: this.a_name,
+          //   label: this.a_label,
+          //   r_type: this.a_rlabel,
+          //   r_name: this.a_rname
+          // })
         )
         .then(function(response) {
           console.log(response);
@@ -494,7 +521,7 @@ export default {
           that.a_label = "";
           that.a_name = "";
           document.getElementById("graph").innerHTML = "";
-          that.draw(response.data.nodes, response.data.links);
+          that.draw(response.data[0], response.data[1]);
         })
         .catch(function(error) {
           console.log(error);
@@ -512,18 +539,17 @@ export default {
         .then(() => {
           var that = this;
           axios
-            .post(
-              "http://10.108.211.136:5000/del_node",
-              qs.stringify({
-                // params: {
-                id: this.id
-              })
+            .post(common.url3+"del_node/"+this.id
+              // qs.stringify({
+              //   // params: {
+              //   id: this.id
+              // })
             )
             .then(function(response) {
               console.log(response);
               alert("删除成功！");
               document.getElementById("graph").innerHTML = "";
-              that.draw(response.data.nodes, response.data.links);
+              that.draw(response.data[0], response.data[1]);
             })
             .catch(function(error) {
               console.log(error);
@@ -552,22 +578,23 @@ export default {
       var that = this;
       axios
         .post(
-          "http://10.108.211.136:5000/mod_rel",
-          qs.stringify({
-            // params: {
-            father: this.rfatherid,
-            son: this.rsonid,
-            r_type: this.rlabel,
-            r_name: this.oldname,
-            new_name: this.rname
-          })
+          common.url3+"mod_rel/"+this.rfatherid+"/"+this.rsonid+"/"+
+          this.rlabel+"/"+this.oldname+"/"+this.rname
+          // qs.stringify({
+          //   // params: {
+          //   father: this.rfatherid,
+          //   son: this.rsonid,
+          //   r_type: this.rlabel,
+          //   r_name: this.oldname,
+          //   new_name: this.rname
+          // })
         )
         .then(function(response) {
           console.log(response);
           that.disabledInput2 = true;
           alert("修改成功！");
           document.getElementById("graph").innerHTML = "";
-          that.draw(response.data.nodes, response.data.links);
+          that.draw(response.data[0], response.data[1]);
         })
         .catch(function(error) {
           console.log(error);
@@ -580,14 +607,14 @@ export default {
       var that = this;
       axios
         .post(
-          "http://10.108.211.136:5000/add_rel",
-          qs.stringify({
-            // params: {
-            father: this.a_rfather,
-            son: this.a_rson,
-            r_type: this.a_rrlabel,
-            r_name: this.a_rrname
-          })
+          common.url3+"add_rel/"+this.a_rfather+"/"+this.a_rson+"/"+this.a_rrlabel+"/"+this.a_rrname
+          // qs.stringify({
+          //   // params: {
+          //   father: this.a_rfather,
+          //   son: this.a_rson,
+          //   r_type: this.a_rrlabel,
+          //   r_name: this.a_rrname
+          // })
         )
         .then(function(response) {
           console.log(response);
@@ -598,7 +625,7 @@ export default {
           that.a_rrlabel = "";
           that.a_rrname = "";
           document.getElementById("graph").innerHTML = "";
-          that.draw(response.data.nodes, response.data.links);
+          that.draw(response.data[0], response.data[1]);
         })
         .catch(function(error) {
           console.log(error);
@@ -617,19 +644,19 @@ export default {
           var that = this;
           axios
             .post(
-              "http://10.108.211.136:5000/del_rel",
-              qs.stringify({
-                father: this.rfatherid,
-                son: this.rsonid,
-                r_type: this.rlabel,
-                r_name: this.rname
-              })
+              common.url3+"del_rel/"+this.rfatherid+"/"+this.rsonid+"/"+this.rlabel+"/"+this.rname
+              // qs.stringify({
+              //   father: this.rfatherid,
+              //   son: this.rsonid,
+              //   r_type: this.rlabel,
+              //   r_name: this.rname
+              // })
             )
             .then(function(response) {
               console.log(response);
               alert("删除成功！");
               document.getElementById("graph").innerHTML = "";
-              that.draw(response.data.nodes, response.data.links);
+              that.draw(response.data[0], response.data[1]);
             })
             .catch(function(error) {
               console.log(error);
@@ -678,15 +705,10 @@ export default {
   },
   mounted() {
     axios
-      .get("http://10.108.211.136:5000/graph/100", {
-        datatype: "jsonp",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
+      .post(common.url3+"graph")
       .then(res => {
         console.log(res.data);
-        this.draw(res.data.nodes, res.data.links);
+        this.draw(res.data[0], res.data[1]);
       });
   }
 };
@@ -722,5 +744,8 @@ p {
 }
 .deep > .el-input__inner {
   color: #717275;
+}
+.el-select {
+  width: 100%;
 }
 </style>

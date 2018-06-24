@@ -17,7 +17,7 @@
           <el-input v-model="$store.state.username" placeholder="请输入用户名" class="login-input"></el-input><br>
           <span class="login-label">密码</span>
           <el-input v-model="$store.state.password" placeholder="请输入密码" class="login-input" type="password"></el-input><br/>
-          <el-button type="primary" class="login-btn" @click="checkLogin">登录</el-button>
+          <el-button type="primary" class="login-btn" @click="checkLogin($store.state)">登录</el-button>
           <el-button class="login-btn">取消</el-button>
         </div>
       </el-row>

@@ -103,7 +103,17 @@
         </el-col>
       </el-row>
       <el-row v-show="show === 2">
-        <el-row style="display: flex; justify-content: space-between;width: 1300px;">
+        <el-row>
+          <div class="draw-canvas-big">
+            <h1>产业注册资金</h1>
+            <div id="company-fund"></div>
+            <div class="right-decription">
+              <h1>注册资金列表</h1>
+              <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+            </div>
+          </div>
+        </el-row>
+        <el-row style="display: flex; justify-content: space-between;width: 100%;">
           <div class="draw-canvas">
             <h1>技术产业链</h1>
             <div id="company-tree"></div>
@@ -113,7 +123,7 @@
             <div id="bar"></div>
           </div>
         </el-row>
-        <el-row style="display: flex; justify-content: space-between;width: 1300px;">
+        <el-row style="display: flex; justify-content: space-between;width: 100%;">
           <div class="draw-canvas">
             <h1>技术成果输出量</h1>
             <div id="line"></div>
@@ -167,6 +177,7 @@
   import axios from 'axios'
   import * as common from '../common/common.js'
   import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
+  let qs = require("qs");
   export default {
     data() {
       return {
@@ -192,7 +203,46 @@
         speedY:Math.PI/360,
         tags: [],
         showNews: '',
-        companyTree: {}
+        companyTree: {},
+        data: [{
+          label: '一级 1',
+          children: [{
+            label: '二级 1-1',
+            children: [{
+              label: '三级 1-1-1'
+            }]
+          }]
+        }, {
+          label: '一级 2',
+          children: [{
+            label: '二级 2-1',
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }, {
+          label: '一级 3',
+          children: [{
+            label: '二级 3-1',
+            children: [{
+              label: '三级 3-1-1'
+            }]
+          }, {
+            label: '二级 3-2',
+            children: [{
+              label: '三级 3-2-1'
+            }]
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
       }
     },
 
@@ -379,6 +429,152 @@
           }
         })
       },
+      drawForce(nodes, edges) {
+        var that = this;
+        var width = 770;
+        var height = 680;
+        var svg = d3
+          .select("#company-fund")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        var force = d3.layout
+          .force()
+          .nodes(nodes) //指定节点数组
+          .links(edges) //指定连线数组
+          .size([width, height]) //指定范围
+          .linkDistance(150) //指定连线长度
+          .charge(-400); //相互之间的作用力
+
+        force.start(); //开始作用
+
+        //console.log(nodes);
+        //console.log(edges);
+
+        //添加连线
+        var svg_edges = svg
+          .selectAll("line")
+          .data(edges)
+          .enter()
+          .append("line")
+          .style("stroke", "#d0d0d0")
+          .style("stroke-width", 3.4)
+          .on("click", function(d, i) {
+            // that.rfather = edges[i].source.name;
+            // that.rfatherid = edges[i].source.id;
+            // that.rson = edges[i].target.name;
+            // that.rsonid = edges[i].target.id;
+            // that.rlabel = edges[i].rel;
+            // that.rname = edges[i].name;
+            // that.activeName = "second";
+            // document.getElementById("r_add").style.display = "none";
+          });
+
+        //var color = d3.scale.category20();
+
+        //添加节点
+        var svg_nodes = svg
+          .selectAll("circle")
+          .data(nodes)
+          .enter()
+          .append("circle")
+          .attr("r", 20)
+          .style("fill", function(d, i) {
+            if (nodes[i].level == "0") {
+              return "#E800E8";
+            } else if (nodes[i].level == "1") {
+              return "FF8000";
+            } else if (nodes[i].level == "2") {
+              return "#6EB0EA";
+            } else if (nodes[i].level == "3") {
+              return "8CEA00";
+            } else if (nodes[i].level == "4") {
+              return "#90E4EA";
+            } else if (nodes[i].level == "5") {
+              return "#7D7DFF";
+            } else if (nodes[i].level == "6") {
+              return "#80FFFF";
+            } else if (nodes[i].level == "7") {
+              return "#95CACA";
+            } else if (nodes[i].level == "8") {
+              return "#D2A2CC";
+            } else if (nodes[i].level == "9") {
+              return "#E8E8D0";
+            } else {
+              return "#ADADAD";
+            }
+          })
+          // .style("stroke", "black")
+          // .style("stroke-width", 1)
+          .call(force.drag) ////使得节点能够拖动
+          .on("click", function(d, i) {
+            // that.name = nodes[i].name;
+            // that.id = nodes[i].id;
+            // that.label = nodes[i].type;
+            // that.father = nodes[i].father;
+            // that.activeName = "first";
+            // document.getElementById("add").style.display = "none";
+          });
+
+        //添加描述节点的文字
+        var svg_texts = svg
+          .selectAll("text")
+          .data(nodes)
+          .enter()
+          .append("text")
+          .style("fill", "black")
+          .attr("dx", -50)
+          .attr("dy", 30)
+          .text(function(d) {
+            return d.name;
+          });
+
+        force.on("tick", function() {
+          //对于每一个时间间隔
+
+          //更新连线坐标
+          svg_edges
+            .attr("x1", function(d) {
+              return d.source.x;
+            })
+            .attr("y1", function(d) {
+              return d.source.y;
+            })
+            .attr("x2", function(d) {
+              return d.target.x;
+            })
+            .attr("y2", function(d) {
+              return d.target.y;
+            });
+
+          //更新节点坐标
+          svg_nodes
+            .attr("cx", function(d) {
+              return d.x;
+            })
+            .attr("cy", function(d) {
+              return d.y;
+            });
+
+          //更新文字坐标
+          svg_texts
+            .attr("x", function(d) {
+              return d.x;
+            })
+            .attr("y", function(d) {
+              return d.y;
+            });
+        });
+      },
+      getForceData(e) {
+        // console.log(e);
+        axios.post(common.url3+"search/"+e)
+        .then(res => {
+          console.log(res.data);
+          this.drawForce(res.data[0], res.data[1]);
+        });
+      },
       getCompanyTreeData(e) {
         axios.get(common.url1+"findComByTechInTChain",{
           params:{
@@ -390,7 +586,7 @@
           }
         }).then((res, err) => {
           if(res) {
-            console.log(res.data)
+            // console.log(res.data)
               this.companyTree = res.data;
             this.drawTree2("company-tree",this.companyTree);
           }
@@ -726,6 +922,9 @@
       fetchData(){
         // console.log('路由发送变化doing...');
         location.reload();
+      },
+      handleNodeClick(data) {
+        console.log(data);
       }
     },
     mounted(){
@@ -735,6 +934,7 @@
       this.getNews(this.entity);
       // this.getCompanyDetail(this.entity);
       // this.getAbsImport(this.entity);
+      this.getForceData(this.entity);
       this.getTechnologies(this.entity);
       this.getTreeData(this.entity);
       this.drawRadar();
@@ -802,14 +1002,47 @@
     background-color: #ffffff;
     border-radius: 5px;
     margin-top: 20px;
+    overflow: hidden;
+  }
+  .draw-canvas-big {
+    display: inline-block;
+    height: 800px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-top: 20px;
   }
   #radar, #bar, #line, #company-tree {
     width: 450px;
     height: 700px;
     padding-left: 50px;
   }
-  #company-tree {
+  #company-fund, #company-tree {
     width: 500px;
+  }
+  #company-fund {
+    float: left;
+  }
+  .right-decription {
+    width: 300px;
+    height: 650px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: left;
+  }
+  .inves-name {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .inves-date {
+    color: dodgerblue;
   }
   #radar div, #bar div, #line div, #company-tree div {
     width: 450px !important;
